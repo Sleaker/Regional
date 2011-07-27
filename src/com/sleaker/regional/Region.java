@@ -1,8 +1,10 @@
 package com.sleaker.regional;
 
 import java.util.Comparator;
+import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 
@@ -14,21 +16,60 @@ import com.herocraftonline.dthielke.lists.PrivilegedList;
 public abstract class Region implements Comparator<Region> {
 
 	/**
-	 * Represents a Non-Unique name for the Region
+	 * Non-Unique name for the Region
 	 */
 	public final String name;
 
 	/**
-	 * Represents a Unique id for the Region
+	 * Unique id for the Region
 	 */
 	public final short id;
 
+	/**
+	 * Associated Priveledge Access list for this region
+	 */
 	private PrivilegedList privs;
+	
+	/**
+	 * Namespaces define which plugins are associated with this region
+	 */
+	private Set<String> namespaces;
 		
-	protected Region(String name, short id, PrivilegedList privs) {
+	protected Region(String name, short id, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
 		this.privs = privs;
+		namespaces.add(plugin.getDescription().getName());
+	}
+	
+	/**
+	 * Tests if this region is in the specified namespace 
+	 * 
+	 * @param pluginName
+	 * @return
+	 */
+	public boolean isInNamespace(String pluginName) {
+		return namespaces.contains(pluginName);
+	}
+	
+	/**
+	 * Adds a namespace to the namespaces set
+	 * 
+	 * @param plugin
+	 * @return
+	 */
+	public boolean addNamespace(Plugin plugin) {
+		return this.namespaces.add(plugin.getDescription().getName());
+	}
+	
+	/**
+	 * Removes a namespace from the namespaces set
+	 * 
+	 * @param plugin
+	 * @return
+	 */
+	public boolean removeNamespace(Plugin plugin) {
+		return this.namespaces.remove(plugin.getDescription().getName());
 	}
 	
 	/**

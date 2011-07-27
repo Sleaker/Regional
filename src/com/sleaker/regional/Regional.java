@@ -9,6 +9,8 @@ public class Regional extends JavaPlugin {
 	private String plugName;
 	private Logger log = Logger.getLogger("Minecraft");
 	
+	private static short nextId = 0;
+	
 	@Override
 	public void onDisable() {
 		log.info(plugName + " disabled");
@@ -21,4 +23,7 @@ public class Regional extends JavaPlugin {
 		log.info(plugName + " v" + this.getDescription().getVersion() + " by " + this.getDescription().getAuthors() + " enabled!");
 	}
 
+	public static short getNextId() {
+		return nextId++;
+	}
 }

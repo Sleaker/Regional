@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 
@@ -21,10 +22,19 @@ public class CubeRegion extends Region {
 	 */
 	private Set<Cube> cubeSet = Collections.synchronizedSet(new HashSet<Cube>());
 
-	protected CubeRegion(String name, short id, PrivilegedList privs) {
-		super(name, id, privs);
+	protected CubeRegion(String name, short id, PrivilegedList privs, Plugin plugin) {
+		super(name, id, privs, plugin);
 	}
 
+	public CubeRegion(String name, PrivilegedList privs, Plugin plugin, Set<Cube> cubeSet) {
+		super(name, Regional.getNextId(), privs, plugin);
+		this.cubeSet = cubeSet;
+	}
+	
+	/**
+	 * CubeRegions can only contain other Cubes or CubeRegions
+	 * 
+	 */
 	public boolean contains(Object obj) {
 		if (obj instanceof Cube)
 			return this.cubeSet.contains(obj);
@@ -75,17 +85,20 @@ public class CubeRegion extends Region {
 
 	@Override
 	public int compare(Region o1, Region o2) {
-		/*
-		 * TODO: Fix comparison
-		 *
+		//If these are the same region then return 0
 		if (o1.equals(o2))
 			return 0;
-		else if (o1.containsAll(o2.cubeSet))
+		//If these Regions are not CubeRegions they don't follow inheritance rules so don't bother checking
+		else if (!(o1 instanceof CubeRegion) || !(o2 instanceof CubeRegion))
+			return 0;
+
+		CubeRegion cr1 = (CubeRegion) o1;
+		CubeRegion cr2 = (CubeRegion) o2;
+		if (cr1.containsAll(cr2.cubeSet))
 			return 1;
-		else if (o2.containsAll(o1.cubeSet))
+		else if (cr2.containsAll(cr1.cubeSet))
 			return -1;
 		else
-		 */
-		return 0;
+			return 0;
 	}
 }
