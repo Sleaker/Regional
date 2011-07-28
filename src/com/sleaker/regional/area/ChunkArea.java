@@ -2,34 +2,34 @@ package com.sleaker.regional.area;
 
 import org.bukkit.Location;
 
-public class ChunkCube implements Comparable<ChunkCube> {
+public class ChunkArea implements Comparable<ChunkArea> {
 	/**
-	 * Represents the Cubes Z-Chunk Value
+	 * Represents the Z-Chunk Value
 	 */
 	public final int z;
 
 	/**
-	 * Represents the Cubes X-Chunk Value
+	 * Represents the X-Chunk Value
 	 */
 	public final int x;
 
 	/**
-	 * Constructs a new ChunkCube from the given X and Z values;
+	 * Constructs a new ChunkArea from the given X and Z values;
 	 * 
 	 * @param x
 	 * @param z
 	 */
-	public ChunkCube(int x, int z) {
+	public ChunkArea(int x, int z) {
 		this.x = x;
 		this.z = z;
 	}
 	
 	/**
-	 * Constructs a new ChunkCube from the location object
+	 * Constructs a new ChunkArea from the location object
 	 * 
 	 * @param loc
 	 */
-	public ChunkCube(Location loc) {
+	public ChunkArea(Location loc) {
 		this.x = (int) loc.getX() >> 4;
 		this.z = (int) loc.getZ() >> 4;
 	}
@@ -44,20 +44,28 @@ public class ChunkCube implements Comparable<ChunkCube> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		else if (!(obj instanceof ChunkCube))
+		else if (!(obj instanceof ChunkArea))
 			return false;
 
-		ChunkCube that = (ChunkCube) obj;
+		ChunkArea that = (ChunkArea) obj;
 		return (this.x == that.x && this.z == that.z);
 	}
 
+	/**
+	 * Compares this chunkArea (x) with chunkArea o.
+	 * If x.equals(o) returns 0
+	 * When o is an instance of a cube and is contained within x - returns 0
+	 * Otherwise if x.x is greater than or equal to o.x - returns 1
+	 * Finally if no other conditions are met returns -1
+	 * 
+	 */
 	@Override
-	public int compareTo(ChunkCube o) {
+	public int compareTo(ChunkArea o) {
 		if (this.equals(o))
 			return 0;
 		else if (o instanceof Cube && this.x == o.x && this.z == o.z)
 			return 0;
-		else if (this.x > o.x)
+		else if (this.x >= o.x)
 			return 1;
 		else
 			return -1;
