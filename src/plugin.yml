@@ -1,0 +1,5 @@
+name: Regional
+main: com.sleaker.regional.Regional
+version: 1.0.0-b000
+author: Sleaker
+depend: [Lists]

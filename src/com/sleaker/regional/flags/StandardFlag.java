@@ -1,6 +1,12 @@
 package com.sleaker.regional.flags;
 
-public enum EnumFlag {
+/**
+ * Defines the standard flags that a region can have
+ * 
+ * @author sleak
+ *
+ */
+public enum StandardFlag {
     NO_BUILD(0, "no-build"),
     NO_PVP(1, "no-pvp"),
     NO_MOB_DAMAGE(2, "no-mob-damage"),
@@ -25,9 +31,9 @@ public enum EnumFlag {
     
     private final String name;
     private final int id;
-    private static final EnumFlag[] lookupId;
+    private static final StandardFlag[] lookupId;
     
-    EnumFlag(int id, String name) {
+    StandardFlag(int id, String name) {
     	this.id = id;
     	this.name = name;
     }
@@ -39,9 +45,17 @@ public enum EnumFlag {
      * @param e
      * @return String name
      */
-    public String getName(EnumFlag e) {
+    public String getName(StandardFlag e) {
     	return e.name;
     }
+    
+    /**
+     * Returns the enum's Name
+     * This is not to be confused with the Enum's name() method
+     * 
+     * @param int id
+     * @return String name
+     */
     public String getName(int id) {
     	return lookupId[id].name;
     }
@@ -51,8 +65,18 @@ public enum EnumFlag {
      * @param e
      * @return int id
      */
-    public int getId(EnumFlag e) {
+    public int getId(StandardFlag e) {
     	return e.id;
+    }
+    
+    /**
+     * Returns an immutable array of all values in this enum
+     * This method does not clone the values like the values() method
+     * 
+     * @return
+     */
+    public static StandardFlag[] getValues() {
+    	return lookupId;
     }
     
     /**
@@ -61,11 +85,11 @@ public enum EnumFlag {
      * @param id
      * @return
      */
-    public static EnumFlag getFlag(int id) {
+    public static StandardFlag getFlag(int id) {
     	return lookupId[id];
     }
     
     static {
-    	lookupId = EnumFlag.values();
+    	lookupId = StandardFlag.values();
     }
 }

@@ -77,6 +77,10 @@ public class CubeRegion extends Region {
 		this.cubeSet.addAll(cubes);
 	}
 
+	public Set<Cube> getCubeSet() {
+		return cubeSet;
+	}
+
 	/*
 	 * Gets the total number of cubes within the region
 	 */
@@ -85,19 +89,25 @@ public class CubeRegion extends Region {
 	}
 
 	@Override
-	public int compare(Region o1, Region o2) {
+	public int compareTo(Region region) {
 		//If these are the same region then return 0
-		if (o1.equals(o2))
+		if (this.equals(region))
 			return 0;
-		//If these Regions are not CubeRegions they don't follow inheritance rules so don't bother checking
-		else if (!(o1 instanceof CubeRegion) || !(o2 instanceof CubeRegion))
+		if (region instanceof ChunkRegion) {
+			ChunkRegion chunkRegion = (ChunkRegion) region;
+			if (chunkRegion.containsCubes(this.cubeSet))
+				return -1;
+			else
+				return 0;
+		}
+		
+		if (!(region instanceof CubeRegion))
 			return 0;
-
-		CubeRegion cr1 = (CubeRegion) o1;
-		CubeRegion cr2 = (CubeRegion) o2;
-		if (cr1.containsAll(cr2.cubeSet))
+		
+		CubeRegion cubeRegion = (CubeRegion) region;
+		if (this.containsAll(cubeRegion.cubeSet))
 			return 1;
-		else if (cr2.containsAll(cr1.cubeSet))
+		else if (cubeRegion.containsAll(this.cubeSet))
 			return -1;
 		else
 			return 0;

@@ -1,7 +1,6 @@
 package com.sleaker.regional;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,14 +10,14 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
-import com.sleaker.regional.flags.EnumFlag;
+import com.sleaker.regional.flags.StandardFlag;
 
 /**
  * Defines a Region object
  * 
  * @author sleak
  */
-public abstract class Region implements Comparator<Region> {
+public abstract class Region implements Comparable<Region> {
 
 	/**
 	 * Non-Unique name for the Region
@@ -43,7 +42,7 @@ public abstract class Region implements Comparator<Region> {
 	/**
 	 * EnumSet of standard flags that this region contains.
 	 */
-	private Set<EnumFlag> standardFlags = Collections.synchronizedSet(EnumSet.noneOf(EnumFlag.class));
+	private Set<StandardFlag> standardFlags = Collections.synchronizedSet(EnumSet.noneOf(StandardFlag.class));
 	
 	/**
 	 * HashMap of custom flags for this region
@@ -62,7 +61,7 @@ public abstract class Region implements Comparator<Region> {
 	 * Flags added to the set are active (true)
 	 * 
 	 */
-	public void addFlag(EnumFlag flag) {
+	public void addFlag(StandardFlag flag) {
 		standardFlags.add(flag);
 	}
 	/**
@@ -81,7 +80,7 @@ public abstract class Region implements Comparator<Region> {
 	 * 
 	 * @param flag
 	 */
-	public void removeFlag(EnumFlag flag) {
+	public void removeFlag(StandardFlag flag) {
 		standardFlags.remove(flag);
 	}
 	
@@ -91,7 +90,7 @@ public abstract class Region implements Comparator<Region> {
 	 * 
 	 * @return
 	 */
-	public Set<EnumFlag> getFlags() {
+	public Set<StandardFlag> getFlags() {
 		return this.standardFlags;
 	}
 	
@@ -177,8 +176,8 @@ public abstract class Region implements Comparator<Region> {
 	}
 	
 	@Override
-	public abstract int compare(Region o1, Region o2);
-	
+	public abstract int compareTo(Region region);
+
 	public int hashCode() {
 		return this.id;
 	}
