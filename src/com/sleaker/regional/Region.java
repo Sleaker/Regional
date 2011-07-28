@@ -1,12 +1,17 @@
 package com.sleaker.regional;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
+import com.sleaker.regional.flags.EnumFlag;
 
 /**
  * Defines a Region object
@@ -34,12 +39,60 @@ public abstract class Region implements Comparator<Region> {
 	 * Namespaces define which plugins are associated with this region
 	 */
 	private Set<String> namespaces;
-		
+	
+	/**
+	 * EnumSet of standard flags that this region contains.
+	 */
+	private Set<EnumFlag> standardFlags = Collections.synchronizedSet(EnumSet.noneOf(EnumFlag.class));
+	
+	/**
+	 * HashMap of custom flags for this region
+	 */
+	private Map<String, String> customFlags = Collections.synchronizedMap(new HashMap<String, String>());
+	
 	protected Region(String name, short id, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
 		this.privs = privs;
 		namespaces.add(plugin.getDescription().getName());
+	}
+	
+	/**
+	 * Add a flag to the Region
+	 * Flags added to the set are active (true)
+	 * 
+	 */
+	public void addFlag(EnumFlag flag) {
+		standardFlags.add(flag);
+	}
+	/**
+	 * Adds a string flag to the region
+	 * 
+	 * @param name
+	 * @param value
+	 */
+	public void addFlag(String name, String value) {
+		customFlags.put(name, value);
+	}
+	
+	/**
+	 * Remove a flag from the set
+	 * Flags not contained in the set are 'inactive' (false)
+	 * 
+	 * @param flag
+	 */
+	public void removeFlag(EnumFlag flag) {
+		standardFlags.remove(flag);
+	}
+	
+
+	/**
+	 * Returns the Set of all active flags on this region
+	 * 
+	 * @return
+	 */
+	public Set<EnumFlag> getFlags() {
+		return this.standardFlags;
 	}
 	
 	/**
@@ -106,6 +159,13 @@ public abstract class Region implements Comparator<Region> {
 	 * @return
 	 */
 	public abstract boolean containsPoint(Location loc);
+	
+	/**
+	 * Gets the total volume in Cubes.
+	 * 
+	 * @return
+	 */
+	public abstract int volume();
 	
 	public boolean equals(Object o) {
 		if (this == o)

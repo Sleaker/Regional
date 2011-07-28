@@ -1,13 +1,9 @@
-package com.sleaker.regional;
+package com.sleaker.regional.area;
 
 import org.bukkit.Location;
 
-public class Cube {
 
-	/**
-	 * Represents the Cubes X-Chunk Value
-	 */
-	public final int x;
+public class Cube extends ChunkCube {
 	
 	/**
 	 * Represents the Cubes Y-value
@@ -15,23 +11,18 @@ public class Cube {
 	 */
 	public final int y;
 	
-	/**
-	 * Represents the Cubes Z-Chunk Value
-	 */
-	public final int z;
 	
 	public Cube(int x, int y, int z) {
-		this.x = x;
+		super(x, z);
 		this.y = y;
-		this.z = z;
 	}
 	
 	public Cube(Location loc) {
-		this.x = (int) loc.getX() >> 4;
+		super(loc);
 		this.y = (int) loc.getY() >> 4;
-		this.z = (int) loc.getZ() >> 4;
 	}
 	
+	@Override
 	public int hashCode() {
 		int hash = 3;
 		hash = 17 * hash + x;
@@ -40,6 +31,7 @@ public class Cube {
 		return hash;
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
