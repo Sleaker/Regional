@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.flags.Flag;
-import com.sleaker.regional.flags.StandardFlag;
+import com.sleaker.regional.flags.StateFlag;
 
 /**
  * Defines a Generic Region object
@@ -33,11 +33,16 @@ public abstract class Region implements Comparable<Region> {
 	 * What world this region is a part of
 	 */
 	public final String worldName;
-	
+
 	/**
-	 * Associated Priviledge Access list for this region
+	 * Associated Privilege Access list for this region
 	 */
 	private PrivilegedList privs;
+
+	/**
+	 * The associated parent region for this Region
+	 */
+	private Region parent = null;
 
 	/**
 	 * Namespaces define which plugins are associated with this region
@@ -46,14 +51,19 @@ public abstract class Region implements Comparable<Region> {
 
 	/**
 	 * EnumSet of standard flags that this region contains.
+	 * Any flags in the Set are Enabled
 	 */
-	private Set<StandardFlag> standardFlags = EnumSet.noneOf(StandardFlag.class);
+	private Set<StateFlag> standardFlags = EnumSet.noneOf(StateFlag.class);
 
 	/**
 	 * HashMap of custom flags for this region
 	 */
 	private Map<Flag<?>, Object> customFlags = new HashMap<Flag<?>, Object>();
 
+
+	//-------------------------//
+	//    Constructors
+	//-------------------------//
 	protected Region(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
@@ -75,7 +85,7 @@ public abstract class Region implements Comparable<Region> {
 	 * Flags added to the set are active (true)
 	 * 
 	 */
-	public void addFlag(StandardFlag flag) {
+	public void addFlag(StateFlag flag) {
 		standardFlags.add(flag);
 	}
 
@@ -85,7 +95,7 @@ public abstract class Region implements Comparable<Region> {
 	 * 
 	 * @param flag
 	 */
-	public void removeFlag(StandardFlag flag) {
+	public void removeFlag(StateFlag flag) {
 		standardFlags.remove(flag);
 	}
 
@@ -149,10 +159,38 @@ public abstract class Region implements Comparable<Region> {
 	 * 
 	 * @return
 	 */
-	public Set<StandardFlag> getFlags() {
+	public Set<StateFlag> getFlags() {
 		return EnumSet.copyOf(standardFlags);
 	}
 
+	/**
+	 * Attempts to set the parent of this Region
+	 * 
+	 * @author sk89q
+	 * @param parent
+	 * @throws CircularInheritenceException
+	 */
+	public void setParent(Region parent) throws CircularInheritenceException {
+		if (parent == null) {
+			this.parent = null;
+		} 
+		
+		
+		Region p = parent;
+		while (p != null) {
+			if (p == this)
+				throw new CircularInheritenceException();
+			
+			p = p.getParent();
+		}
+		
+		this.parent = parent;
+	}
+
+	public Region getParent() {
+		return parent;
+	}
+	
 	//--------------------------//
 	//  Namespace Methods
 	//--------------------------//
@@ -212,6 +250,7 @@ public abstract class Region implements Comparable<Region> {
 	//  Region Test Methods
 	//----------------------------//
 
+
 	/**
 	 * Tests if the object is contained within the region
 	 * 
@@ -250,5 +289,14 @@ public abstract class Region implements Comparable<Region> {
 
 	public int hashCode() {
 		return this.id;
+	}
+	
+	/**
+	 * Thrown when setting the parent
+	 * 
+	 * @author sk89q
+	 */
+	public static class CircularInheritenceException extends Exception {
+		private static final long serialVersionUID = -3626449351263374520L;
 	}
 }

@@ -6,40 +6,40 @@ package com.sleaker.regional.flags;
  * @author sleak
  *
  */
-public enum StandardFlag {
-    NO_BUILD(0, "no-build"),
-    NO_PVP(1, "no-pvp"),
-    NO_MOB_DAMAGE(2, "no-mob-damage"),
-    NO_MONSTER_SPAWNING(3, "no-monster-spawn"),
-    NO_CREATURE_SPAWNING(4, "no-creature-spawn"),
-    NO_CREEPER_EXPLOSION(5, "no-creeper-explosion"),
-    NO_GHAST_FIREBALL(6, "no-ghast-fireball"),
-    NO_SLEEP(7, "no-sleep"),
-    NO_TNT_EXPLOSION(8, "no-tnt-explosion"),
-    NO_LIGHTER(9, "no-lighter"),
-    NO_FIRE_SPREAD(10, "no-fire-spread"),
-    NO_LIGHTNING(11, "no-lightning"),
-    NO_CHEST_ACCESS(12, "no-chest-access"),
-    NO_WATER_FLOW(13, "no-water-flow"),
-    NO_LAVA_FLOW(14, "no-lava-flow"),
-    NO_USE(15, "no-use"),
-    NO_MUSHROOM_FORM(16, "no-mushroom-form"),
-    NO_LEAF_DECAY(17, "no-leaf-decay"),
+public enum StateFlag {
+    DENY_BUILD(0, "no-build"),
+    DENY_PVP(1, "no-pvp"),
+    DENY_MOB_DAMAGE(2, "no-mob-damage"),
+    DENY_MONSTER_SPAWNING(3, "no-monsters"),
+    DENY_CREATURE_SPAWNING(4, "no-creatures"),
+    DENY_CREEPER_EXPLOSION(5, "no-creeper-explosion"),
+    DENY_GHAST_FIREBALL(6, "no-ghast-fireball"),
+    DENY_SLEEP(7, "no-sleep"),
+    DENY_TNT_EXPLOSION(8, "no-tnt-explosion"),
+    DENY_LIGHTER(9, "no-lighter"),
+    DENY_FIRE_SPREAD(10, "no-fire-spread"),
+    DENY_LIGHTNING(11, "no-lightning"),
+    DENY_CHEST_ACCESS(12, "no-chest-access"),
+    DENY_WATER_FLOW(13, "no-water-flow"),
+    DENY_LAVA_FLOW(14, "no-lava-flow"),
+    DENY_USE(15, "no-use"),
+    DENY_MUSHROOM_FORM(16, "no-mushrooms"),
+    DENY_LEAF_DECAY(17, "no-leaf-decay"),
     NOTIFY_ENTER(18, "notify-enter"),
     NOTIFY_LEAVE(19, "notify-leave"),
     INVINCIBILITY(20, "invincibility"),
-    NO_ICE_MELT(21, "no-ice-melt"),
-    NO_SNOW_MELT(22, "no-snow-melt"),
-    NO_SNOW_FORM(23, "no-snow-form"),
-    NO_ICE_FORM(24, "no-ice-form"),
-    NO_WEATHER(25, "no-weather"),
+    DENY_ICE_MELT(21, "no-ice-melt"),
+    DENY_SNOW_MELT(22, "no-snow-melt"),
+    DENY_SNOW_FORM(23, "no-snow-form"),
+    DENY_ICE_FORM(24, "no-ice-form"),
+    DENY_WEATHER(25, "no-weather"),
     LIST_ACCESS(26, "list-access");
     
     private final String name;
     private final int id;
-    private static final StandardFlag[] lookupId;
+    private static final StateFlag[] lookupId;
     
-    StandardFlag(int id, String name) {
+    StateFlag(int id, String name) {
     	this.id = id;
     	this.name = name;
     }
@@ -68,7 +68,7 @@ public enum StandardFlag {
      * 
      * @return
      */
-    public static StandardFlag[] getValues() {
+    public static StateFlag[] getValues() {
     	return lookupId;
     }
     
@@ -89,11 +89,11 @@ public enum StandardFlag {
      * @param id
      * @return
      */
-    public static StandardFlag getFlag(int id) {
+    public static StateFlag getFlag(int id) {
     	return lookupId[id];
     }
     
     static {
-    	lookupId = StandardFlag.values();
+    	lookupId = StateFlag.values();
     }
 }
