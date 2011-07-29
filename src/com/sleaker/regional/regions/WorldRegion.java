@@ -3,6 +3,12 @@ package com.sleaker.regional.regions;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * Defines a Region for a specific World
+ * 
+ * @author sleak
+ *
+ */
 public class WorldRegion extends Region {
 
 	protected WorldRegion(String name, short id, String worldName, Plugin plugin) {

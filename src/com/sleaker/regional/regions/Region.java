@@ -13,7 +13,7 @@ import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.StandardFlag;
 
 /**
- * Defines a Region object
+ * Defines a Generic Region object
  * 
  * @author sleak
  */
