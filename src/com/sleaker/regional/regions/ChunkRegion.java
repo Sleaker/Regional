@@ -19,16 +19,16 @@ public class ChunkRegion extends Region {
 	 */
 	private Set<ChunkArea> chunkSet = Collections.synchronizedSet(new HashSet<ChunkArea>());
 
-	protected ChunkRegion(String name, short id, PrivilegedList privs, Plugin plugin) {
-		super(name, id, privs, plugin);
+	protected ChunkRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
+		super(name, id, worldName, privs, plugin);
 	}
 
-	public ChunkRegion(String name, PrivilegedList privs, Plugin plugin) {
-		super(name, Regional.getNextId(), privs, plugin);
+	public ChunkRegion(String name, String worldName, PrivilegedList privs, Plugin plugin) {
+		super(name, Regional.getNextId(), worldName, privs, plugin);
 	}
 	
-	public ChunkRegion(String name, Plugin plugin) {
-		super(name, Regional.getNextId(), plugin);
+	public ChunkRegion(String name, String worldName, Plugin plugin) {
+		super(name, Regional.getNextId(), worldName, plugin);
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class ChunkRegion extends Region {
 				return 1;
 			else
 				return 0;
-		}		
+		}
 		return 0;
 	}
 

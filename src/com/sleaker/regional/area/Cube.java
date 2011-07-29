@@ -11,8 +11,8 @@ public class Cube extends ChunkArea {
 	 */
 	public final int y;
 
-	public Cube(int x, int y, int z) {
-		super(x, z);
+	public Cube(int x, int y, int z, String worldName) {
+		super(x, z, worldName);
 		this.y = y;
 	}
 
@@ -24,6 +24,7 @@ public class Cube extends ChunkArea {
 	@Override
 	public int hashCode() {
 		int hash = 3;
+		hash = 17 * hash + worldName.hashCode();
 		hash = 17 * hash + x;
 		hash = 17 * hash + y;
 		hash = 17 * hash + z;
@@ -38,6 +39,6 @@ public class Cube extends ChunkArea {
 			return false;
 
 		Cube that = (Cube) obj;
-		return (this.x == that.x && this.y == that.y && this.z == that.z);
+		return (this.x == that.x && this.y == that.y && this.z == that.z && this.worldName.equals(that.worldName));
 	}
 }

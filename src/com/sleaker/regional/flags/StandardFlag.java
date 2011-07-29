@@ -23,11 +23,17 @@ public enum StandardFlag {
     NO_WATER_FLOW(13, "no-water-flow"),
     NO_LAVA_FLOW(14, "no-lava-flow"),
     NO_USE(15, "no-use"),
-    NO_SNOW_FALL(16, "no-snow-fall"),
+    NO_MUSHROOM_FORM(16, "no-mushroom-form"),
     NO_LEAF_DECAY(17, "no-leaf-decay"),
     NOTIFY_ENTER(18, "notify-enter"),
     NOTIFY_LEAVE(19, "notify-leave"),
-    INVINCIBILITY(20, "invincibility");
+    INVINCIBILITY(20, "invincibility"),
+    NO_ICE_MELT(21, "no-ice-melt"),
+    NO_SNOW_MELT(22, "no-snow-melt"),
+    NO_SNOW_FORM(23, "no-snow-form"),
+    NO_ICE_FORM(24, "no-ice-form"),
+    NO_WEATHER(25, "no-weather"),
+    LIST_ACCESS(26, "list-access");
     
     private final String name;
     private final int id;

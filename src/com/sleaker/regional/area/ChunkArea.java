@@ -3,6 +3,7 @@ package com.sleaker.regional.area;
 import org.bukkit.Location;
 
 public class ChunkArea implements Comparable<ChunkArea> {
+	
 	/**
 	 * Represents the Z-Chunk Value
 	 */
@@ -12,6 +13,11 @@ public class ChunkArea implements Comparable<ChunkArea> {
 	 * Represents the X-Chunk Value
 	 */
 	public final int x;
+	
+	/**
+	 * Represents the World that this Chunk is on
+	 */
+	public final String worldName;
 
 	/**
 	 * Constructs a new ChunkArea from the given X and Z values;
@@ -19,9 +25,10 @@ public class ChunkArea implements Comparable<ChunkArea> {
 	 * @param x
 	 * @param z
 	 */
-	public ChunkArea(int x, int z) {
+	public ChunkArea(int x, int z, String worldName) {
 		this.x = x;
 		this.z = z;
+		this.worldName = worldName;
 	}
 	
 	/**
@@ -32,10 +39,12 @@ public class ChunkArea implements Comparable<ChunkArea> {
 	public ChunkArea(Location loc) {
 		this.x = (int) loc.getX() >> 4;
 		this.z = (int) loc.getZ() >> 4;
+		this.worldName = loc.getWorld().getName();
 	}
 
 	public int hashCode() {
 		int hash = 3;
+		hash = 17 * hash + worldName.hashCode();
 		hash = 17 * hash + x;
 		hash = 17 * hash + z;
 		return hash;
@@ -48,7 +57,7 @@ public class ChunkArea implements Comparable<ChunkArea> {
 			return false;
 
 		ChunkArea that = (ChunkArea) obj;
-		return (this.x == that.x && this.z == that.z);
+		return (this.x == that.x && this.z == that.z && this.worldName.equals(that.worldName));
 	}
 
 	/**
@@ -62,6 +71,8 @@ public class ChunkArea implements Comparable<ChunkArea> {
 	@Override
 	public int compareTo(ChunkArea o) {
 		if (this.equals(o))
+			return 0;
+		else if (this.worldName != o.worldName)
 			return 0;
 		else if (o instanceof Cube && this.x == o.x && this.z == o.z)
 			return 0;

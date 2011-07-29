@@ -1,6 +1,5 @@
 package com.sleaker.regional.regions;
 
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +30,11 @@ public abstract class Region implements Comparable<Region> {
 	public final short id;
 
 	/**
+	 * What world this region is a part of
+	 */
+	public final String worldName;
+	
+	/**
 	 * Associated Priviledge Access list for this region
 	 */
 	private PrivilegedList privs;
@@ -43,23 +47,23 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * EnumSet of standard flags that this region contains.
 	 */
-	private Set<StandardFlag> standardFlags = Collections.synchronizedSet(EnumSet.noneOf(StandardFlag.class));
+	private Set<StandardFlag> standardFlags = EnumSet.noneOf(StandardFlag.class);
 
 	/**
 	 * HashMap of custom flags for this region
 	 */
-	private Map<Flag<?>, Object> customFlags = Collections.synchronizedMap(new HashMap<Flag<?>, Object>());
+	private Map<Flag<?>, Object> customFlags = new HashMap<Flag<?>, Object>();
 
-
-	protected Region(String name, short id, PrivilegedList privs, Plugin plugin) {
+	protected Region(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
+		this.worldName = worldName;
 		this.privs = privs;
 		namespaces.add(plugin.getDescription().getName());
 	}
 
-	protected Region(String name, short id, Plugin plugin) {
-		this(name, id, null, plugin);
+	protected Region(String name, short id, String worldName, Plugin plugin) {
+		this(name, id, worldName, null, plugin);
 	}
 
 	//--------------------------//
@@ -72,9 +76,7 @@ public abstract class Region implements Comparable<Region> {
 	 * 
 	 */
 	public void addFlag(StandardFlag flag) {
-		synchronized (standardFlags) {
-			standardFlags.add(flag);
-		}
+		standardFlags.add(flag);
 	}
 
 	/**
@@ -84,9 +86,7 @@ public abstract class Region implements Comparable<Region> {
 	 * @param flag
 	 */
 	public void removeFlag(StandardFlag flag) {
-		synchronized(standardFlags) {
-			standardFlags.remove(flag);
-		}
+		standardFlags.remove(flag);
 	}
 
 	/**
@@ -96,9 +96,7 @@ public abstract class Region implements Comparable<Region> {
 	 * @param name
 	 */
 	public <T> void removeFlag(T flag) {
-		synchronized(customFlags) {
-			customFlags.remove(name);
-		}
+		customFlags.remove(name);
 	}
 
 	/**
@@ -111,10 +109,7 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Flag<V>, V> V getCustomFlag(T flag) {
-		Object obj;
-		synchronized(customFlags) {
-			obj = customFlags.get(flag);
-		}
+		Object obj = customFlags.get(flag);
 		V val;
 		if (obj != null) {
 			val = (V) obj;
@@ -134,12 +129,10 @@ public abstract class Region implements Comparable<Region> {
 	 * @param val
 	 */
 	public <T extends Flag<V>, V> void setFlag(T flag, V val) {
-		synchronized(customFlags) {
-			if (val == null) {
-				customFlags.remove(flag);
-			} else {
-				customFlags.put(flag, val);
-			}
+		if (val == null) {
+			customFlags.remove(flag);
+		} else {
+			customFlags.put(flag, val);
 		}
 	}
 
@@ -148,9 +141,7 @@ public abstract class Region implements Comparable<Region> {
 	 * @return
 	 */
 	public Map<Flag<?>, Object> getCustomFlags() {
-		synchronized(customFlags) {
-			return customFlags;
-		}
+		return customFlags;
 	}
 
 	/**
@@ -159,15 +150,13 @@ public abstract class Region implements Comparable<Region> {
 	 * @return
 	 */
 	public Set<StandardFlag> getFlags() {
-		synchronized(standardFlags) {
-			return EnumSet.copyOf(standardFlags);
-		}
+		return EnumSet.copyOf(standardFlags);
 	}
 
 	//--------------------------//
 	//  Namespace Methods
 	//--------------------------//
-	
+
 	/**
 	 * Tests if this region is in the specified namespace 
 	 * 
@@ -222,7 +211,7 @@ public abstract class Region implements Comparable<Region> {
 	//----------------------------//
 	//  Region Test Methods
 	//----------------------------//
-	
+
 	/**
 	 * Tests if the object is contained within the region
 	 * 

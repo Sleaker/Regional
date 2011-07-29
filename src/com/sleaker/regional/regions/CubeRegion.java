@@ -24,17 +24,17 @@ public class CubeRegion extends Region {
 	 */
 	private Set<Cube> cubeSet = Collections.synchronizedSet(new HashSet<Cube>());
 
-	protected CubeRegion(String name, short id, PrivilegedList privs, Plugin plugin) {
-		super(name, id, privs, plugin);
+	protected CubeRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
+		super(name, id, worldName, privs, plugin);
 	}
 
-	public CubeRegion(String name, PrivilegedList privs, Plugin plugin, Set<Cube> cubeSet) {
-		super(name, Regional.getNextId(), privs, plugin);
+	public CubeRegion(String name, String worldName, PrivilegedList privs, Plugin plugin, Set<Cube> cubeSet) {
+		super(name, Regional.getNextId(), worldName, privs, plugin);
 		this.cubeSet = cubeSet;
 	}
 	
-	public CubeRegion(String name, Plugin plugin) {
-		super(name, Regional.getNextId(), plugin);
+	public CubeRegion(String name, String worldName, Plugin plugin) {
+		super(name, Regional.getNextId(), worldName, plugin);
 	}
 	
 	/**
@@ -97,6 +97,8 @@ public class CubeRegion extends Region {
 	public int compareTo(Region region) {
 		//If these are the same region then return 0
 		if (this.equals(region))
+			return 0;
+		else if (!this.worldName.equals(region.worldName))
 			return 0;
 		if (region instanceof ChunkRegion) {
 			ChunkRegion chunkRegion = (ChunkRegion) region;
