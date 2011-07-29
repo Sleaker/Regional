@@ -1,4 +1,4 @@
-package com.sleaker.regional;
+package com.sleaker.regional.regions;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
+import com.sleaker.regional.Regional;
 import com.sleaker.regional.area.Cube;
 
 /**
@@ -30,6 +31,10 @@ public class CubeRegion extends Region {
 	public CubeRegion(String name, PrivilegedList privs, Plugin plugin, Set<Cube> cubeSet) {
 		super(name, Regional.getNextId(), privs, plugin);
 		this.cubeSet = cubeSet;
+	}
+	
+	public CubeRegion(String name, Plugin plugin) {
+		super(name, Regional.getNextId(), plugin);
 	}
 	
 	/**

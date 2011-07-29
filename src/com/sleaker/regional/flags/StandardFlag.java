@@ -42,31 +42,18 @@ public enum StandardFlag {
      * Returns the enum's Name
      * This is not to be confused with the Enum's name() method
      * 
-     * @param e
      * @return String name
      */
-    public String getName(StandardFlag e) {
-    	return e.name;
-    }
-    
-    /**
-     * Returns the enum's Name
-     * This is not to be confused with the Enum's name() method
-     * 
-     * @param int id
-     * @return String name
-     */
-    public String getName(int id) {
-    	return lookupId[id].name;
+    public String getName() {
+    	return this.name;
     }
     
     /**
      * Gets this Flags id
-     * @param e
      * @return int id
      */
-    public int getId(StandardFlag e) {
-    	return e.id;
+    public int getId() {
+    	return this.id;
     }
     
     /**
@@ -77,6 +64,17 @@ public enum StandardFlag {
      */
     public static StandardFlag[] getValues() {
     	return lookupId;
+    }
+    
+    /**
+     * Returns the enum's Name
+     * This is not to be confused with the Enum's name() method
+     * 
+     * @param int id
+     * @return String name
+     */
+    public static String getName(int id) {
+    	return lookupId[id].name;
     }
     
     /**

@@ -1,4 +1,4 @@
-package com.sleaker.regional;
+package com.sleaker.regional.regions;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
+import com.sleaker.regional.Regional;
 import com.sleaker.regional.area.ChunkArea;
 import com.sleaker.regional.area.Cube;
 
@@ -25,7 +26,11 @@ public class ChunkRegion extends Region {
 	public ChunkRegion(String name, PrivilegedList privs, Plugin plugin) {
 		super(name, Regional.getNextId(), privs, plugin);
 	}
-
+	
+	public ChunkRegion(String name, Plugin plugin) {
+		super(name, Regional.getNextId(), plugin);
+	}
+	
 	@Override
 	public boolean contains(Object obj) {
 		if (obj instanceof Cube)
