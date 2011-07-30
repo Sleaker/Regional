@@ -22,17 +22,17 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * Non-Unique name for the Region
 	 */
-	public final String name;
+	final String name;
 
 	/**
 	 * Unique id for the Region
 	 */
-	public final short id;
+	final short id;
 
 	/**
 	 * What world this region is a part of
 	 */
-	public final String worldName;
+	final String worldName;
 
 	/**
 	 * Associated Privilege Access list for this region
@@ -44,6 +44,8 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	private Region parent = null;
 
+	private byte weight = 0;
+	
 	/**
 	 * Namespaces define which plugins are associated with this region
 	 */
@@ -69,6 +71,7 @@ public abstract class Region implements Comparable<Region> {
 		this.id = id;
 		this.worldName = worldName;
 		this.privs = privs;
+		this.weight = 0;
 		namespaces.add(plugin.getDescription().getName());
 	}
 
@@ -76,6 +79,31 @@ public abstract class Region implements Comparable<Region> {
 		this(name, id, worldName, null, plugin);
 	}
 
+	//----------------------//
+	//  Basic Data Getters
+	//----------------------//
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public short getId() {
+		return id;
+	}
+
+	/**
+	 * @return the worldName
+	 */
+	public String getWorldName() {
+		return worldName;
+	}
+	
 	//--------------------------//
 	//   Flag Methods
 	//--------------------------//
@@ -169,12 +197,14 @@ public abstract class Region implements Comparable<Region> {
 	 * @author sk89q
 	 * @param parent
 	 * @throws CircularInheritenceException
+	 * @throws UnacceptableInheritenceException 
 	 */
-	public void setParent(Region parent) throws CircularInheritenceException {
+	public void setParent(Region parent) throws CircularInheritenceException, UnacceptableInheritenceException {
 		if (parent == null) {
 			this.parent = null;
 		} 
-		
+		if (this instanceof ChunkRegion && parent instanceof CubeRegion)
+			throw new UnacceptableInheritenceException();
 		
 		Region p = parent;
 		while (p != null) {
@@ -183,7 +213,6 @@ public abstract class Region implements Comparable<Region> {
 			
 			p = p.getParent();
 		}
-		
 		this.parent = parent;
 	}
 
@@ -194,6 +223,14 @@ public abstract class Region implements Comparable<Region> {
 	//--------------------------//
 	//  Namespace Methods
 	//--------------------------//
+
+	public void setWeight(byte weight) {
+		this.weight = weight;
+	}
+
+	public byte getWeight() {
+		return weight;
+	}
 
 	/**
 	 * Tests if this region is in the specified namespace 
@@ -284,19 +321,42 @@ public abstract class Region implements Comparable<Region> {
 		return this.id == ((Region) o).id;
 	}
 
+	/**
+	 * Identical to WGs priority weighting
+	 * @author sk89q
+	 */
 	@Override
-	public abstract int compareTo(Region region);
+	public int compareTo(Region region) {
+		if (this.id == region.id)
+			return 0;
+		else if (this.weight == region.weight)
+			return 1;
+		else if (this.weight > region.weight)
+			return -1;
+		else
+			return 1;
+	}
 
 	public int hashCode() {
 		return this.id;
 	}
 	
 	/**
-	 * Thrown when setting the parent
+	 * Thrown when setting the parent if it would result in circular parenting
 	 * 
 	 * @author sk89q
 	 */
 	public static class CircularInheritenceException extends Exception {
 		private static final long serialVersionUID = -3626449351263374520L;
+	}
+	
+	/**
+	 * Thrown when setting the parrent, when a chunk type being set as a parent
+	 * is not able to be set as a parent region
+	 * @author sleak
+	 */
+	public static class UnacceptableInheritenceException extends Exception {
+		private static final long serialVersionUID = 7010178538921122758L;
+		
 	}
 }

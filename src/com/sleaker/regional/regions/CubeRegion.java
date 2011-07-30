@@ -92,31 +92,4 @@ public class CubeRegion extends Region {
 	public int volume() {
 		return cubeSet.size();
 	}
-
-	@Override
-	public int compareTo(Region region) {
-		//If these are the same region then return 0
-		if (this.equals(region))
-			return 0;
-		else if (!this.worldName.equals(region.worldName))
-			return 0;
-		if (region instanceof ChunkRegion) {
-			ChunkRegion chunkRegion = (ChunkRegion) region;
-			if (chunkRegion.containsCubes(this.cubeSet))
-				return -1;
-			else
-				return 0;
-		}
-		
-		if (!(region instanceof CubeRegion))
-			return 0;
-		
-		CubeRegion cubeRegion = (CubeRegion) region;
-		if (this.containsAll(cubeRegion.cubeSet))
-			return 1;
-		else if (cubeRegion.containsAll(this.cubeSet))
-			return -1;
-		else
-			return 0;
-	}
 }
