@@ -42,6 +42,12 @@ public class ChunkArea implements Comparable<ChunkArea> {
 		this.worldName = loc.getWorld().getName();
 	}
 
+	public ChunkArea(ChunkArea chunkArea) {
+		this.x = chunkArea.x;
+		this.z = chunkArea.z;
+		this.worldName = chunkArea.worldName;
+	}
+
 	public int hashCode() {
 		int hash = 3;
 		hash = 17 * hash + worldName.hashCode();

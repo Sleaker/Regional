@@ -15,6 +15,11 @@ public class Cube extends ChunkArea {
 		super(x, z, worldName);
 		this.y = y;
 	}
+	
+	public Cube(ChunkArea chunkArea, int y) {
+		super(chunkArea);
+		this.y = y;
+	}
 
 	public Cube(Location loc) {
 		super(loc);
