@@ -92,4 +92,9 @@ public class CubeRegion extends Region {
 	public int volume() {
 		return cubeSet.size();
 	}
+
+	@Override
+	public String getTypeName() {
+		return "cube";
+	}
 }

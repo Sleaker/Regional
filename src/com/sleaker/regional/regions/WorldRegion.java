@@ -13,6 +13,7 @@ public class WorldRegion extends Region {
 
 	protected WorldRegion(String name, short id, String worldName, Plugin plugin) {
 		super(name, id, worldName, plugin);
+		this.weight = -1;
 	}
 
 	@Override
@@ -32,14 +33,6 @@ public class WorldRegion extends Region {
 	public int volume() {
 		return 1;
 	}
-
-	@Override
-	public int compareTo(Region region) {
-		if (this.worldName.equals(region.worldName))
-			return 0;
-		else
-			return 1;
-	}
 	
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -49,5 +42,10 @@ public class WorldRegion extends Region {
 		
 		WorldRegion wR = (WorldRegion) obj;
 		return wR.worldName.equals(this.worldName);
+	}
+
+	@Override
+	public String getTypeName() {
+		return "world";
 	}
 }

@@ -66,5 +66,9 @@ public class ChunkRegion extends Region {
 	public int volume() {
 		return chunkSet.size() * 8;
 	}
-
+	
+	@Override
+	public String getTypeName() {
+		return "chunk";
+	}
 }

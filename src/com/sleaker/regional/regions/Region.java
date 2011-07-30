@@ -33,7 +33,7 @@ public abstract class Region implements Comparable<Region> {
 	 * What world this region is a part of
 	 */
 	final String worldName;
-
+	
 	/**
 	 * Associated Privilege Access list for this region
 	 */
@@ -44,7 +44,7 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	private Region parent = null;
 
-	private byte weight = 0;
+	byte weight = 0;
 	
 	/**
 	 * Namespaces define which plugins are associated with this region
@@ -190,6 +190,12 @@ public abstract class Region implements Comparable<Region> {
 	public Set<StateFlag> getFlags() {
 		return EnumSet.copyOf(standardFlags);
 	}
+	
+	/**
+	 * Gets the type of this region.
+	 * @return string type
+	 */
+	public abstract String getTypeName();
 
 	/**
 	 * Attempts to set the parent of this Region
