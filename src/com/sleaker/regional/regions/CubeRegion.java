@@ -1,6 +1,8 @@
 package com.sleaker.regional.regions;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -81,8 +83,10 @@ public class CubeRegion extends Region {
 		this.cubeSet.addAll(cubes);
 	}
 
-	public Set<Cube> getCubeSet() {
-		return cubeSet;
+	public List<Cube> getCubes() {
+		List<Cube> cubeList = new ArrayList<Cube>();
+		cubeList.addAll(cubeSet);
+		return cubeList;
 	}
 
 	/*

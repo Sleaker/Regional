@@ -1,5 +1,6 @@
 package com.sleaker.regional.managers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,13 +17,13 @@ import com.sleaker.regional.regions.Region;
  */
 public class WorldRegionManager {
 
-	private Map<Short, Region> regionMap;
+	private Map<Short, CubeRegion> regionMap;
 
-	private Map<Cube, Set<Region>> areaMap;
+	private Map<Cube, Set<CubeRegion>> areaMap;
 
 	public WorldRegionManager() {
-		regionMap = new HashMap<Short, Region>();
-		areaMap = new HashMap<Cube, Set<Region>>();
+		regionMap = new HashMap<Short, CubeRegion>();
+		areaMap = new HashMap<Cube, Set<CubeRegion>>();
 	}
 
 	/**
@@ -35,6 +36,15 @@ public class WorldRegionManager {
 		return regionMap.get(id);
 	}
 
+	/**
+	 * Returns a collection of all Regions in the Region Manager
+	 * 
+	 * @return
+	 */
+	public Collection<CubeRegion> getRegions() {
+		return regionMap.values();
+	}
+	
 	/**
 	 * adds the specific region to the regionMap and areaMap
 	 * 
@@ -49,9 +59,9 @@ public class WorldRegionManager {
 				//TODO: Check if this region should have any parents
 			
 			regionMap.put(region.getId(), region);
-			for (Cube cube : region.getCubeSet()) {
+			for (Cube cube : region.getCubes()) {
 				if (!areaMap.containsKey(cube))
-					areaMap.put(cube, new HashSet<Region>());
+					areaMap.put(cube, new HashSet<CubeRegion>());
 
 				areaMap.get(cube).add(region);
 			}

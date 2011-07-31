@@ -67,4 +67,8 @@ public class Cube {
 		Cube that = (Cube) obj;
 		return (this.x == that.x && this.y == that.y && this.z == that.z && this.worldName.equals(that.worldName));
 	}
+	
+	public String toString() {
+		return this.x + "," + this.y + "," + this.z;
+	}
 }

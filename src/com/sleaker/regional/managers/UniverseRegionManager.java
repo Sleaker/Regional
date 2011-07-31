@@ -28,6 +28,35 @@ public class UniverseRegionManager {
 	}
 	
 	/**
+	 * Get a worlds region manager
+	 * 
+	 * @param worldName
+	 * @return
+	 */
+	public WorldRegionManager getWorldRegionManager(String worldName) {
+		return worldManagers.get(worldName);
+	}
+	
+	/**
+	 * Get a worlds Region
+	 * 
+	 * @param worldName
+	 * @return
+	 */
+	public WorldRegion getWorldRegion(String worldName) {
+		return worldRegions.get(worldName);
+	}
+	
+	/**
+	 * Adds a worldregion to the worldRegions map
+	 * 
+	 * @param region
+	 */
+	public void loadWorldRegion(WorldRegion region) {
+		worldRegions.put(region.getWorldName(), region);
+	}
+	
+	/**
 	 * Load a World's Regions from Storage
 	 * 
 	 * @param worldName

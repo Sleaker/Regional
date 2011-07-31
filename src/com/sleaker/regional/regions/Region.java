@@ -1,7 +1,9 @@
 package com.sleaker.regional.regions;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,6 +47,9 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	private Region parent = null;
 
+	/**
+	 * The weight that this region has. Higher weighted regions have presedence over lower weighted regions
+	 */
 	byte weight = 0;
 	
 	/**
@@ -231,14 +236,33 @@ public abstract class Region implements Comparable<Region> {
 	//  Namespace Methods
 	//--------------------------//
 
+	/**
+	 * Sets the weight of this Region
+	 */
 	public void setWeight(byte weight) {
 		this.weight = weight;
 	}
 
+	/**
+	 * Gets the weight of this Region
+	 * 
+	 * @return
+	 */
 	public byte getWeight() {
 		return weight;
 	}
-
+	
+	/**
+	 * Gets the namespaces associated with this Region
+	 * 
+	 * @return
+	 */
+	public List<String> getNamespaces() {
+		List<String> namespaces = new ArrayList<String>();
+		namespaces.addAll(this.namespaces);
+		return namespaces;
+	}
+	
 	/**
 	 * Tests if this region is in the specified namespace 
 	 * 
