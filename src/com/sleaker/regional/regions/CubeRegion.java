@@ -1,6 +1,5 @@
 package com.sleaker.regional.regions;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class CubeRegion extends Region {
 	/**
 	 * Set of all Cubes contained within the region
 	 */
-	private Set<Cube> cubeSet = Collections.synchronizedSet(new HashSet<Cube>());
+	Set<Cube> cubeSet = new HashSet<Cube>();
 
 	protected CubeRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
 		super(name, id, worldName, privs, plugin);

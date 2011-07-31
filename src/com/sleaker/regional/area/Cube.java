@@ -1,5 +1,6 @@
 package com.sleaker.regional.area;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 
@@ -37,6 +38,13 @@ public class Cube {
 		this.y = (int) loc.getY() >> 4;
 		this.z = (int) loc.getZ() >> 4;
 		this.worldName = loc.getWorld().getName();
+	}
+
+	public Cube(Chunk chunk, int y) {
+		this.x = chunk.getX();
+		this.y = y;
+		this.z = chunk.getZ();
+		this.worldName = chunk.getWorld().getName();
 	}
 
 	@Override
