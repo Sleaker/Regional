@@ -3,8 +3,22 @@ package com.sleaker.regional.area;
 import org.bukkit.Location;
 
 
-public class Cube extends ChunkArea {
+public class Cube {
+	/**
+	 * Represents the Z-Chunk Value
+	 */
+	public final int z;
 
+	/**
+	 * Represents the X-Chunk Value
+	 */
+	public final int x;
+	
+	/**
+	 * Represents the World that this Chunk is on
+	 */
+	public final String worldName;
+	
 	/**
 	 * Represents the Cubes Y-value
 	 * A Cube Y value comprises 16-Y blocks 
@@ -12,18 +26,17 @@ public class Cube extends ChunkArea {
 	public final int y;
 
 	public Cube(int x, int y, int z, String worldName) {
-		super(x, z, worldName);
+		this.x = x;
 		this.y = y;
-	}
-	
-	public Cube(ChunkArea chunkArea, int y) {
-		super(chunkArea);
-		this.y = y;
+		this.z = z;
+		this.worldName = worldName;
 	}
 
 	public Cube(Location loc) {
-		super(loc);
+		this.x = (int) loc.getX() >> 4;
 		this.y = (int) loc.getY() >> 4;
+		this.z = (int) loc.getZ() >> 4;
+		this.worldName = loc.getWorld().getName();
 	}
 
 	@Override

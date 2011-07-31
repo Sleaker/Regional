@@ -36,23 +36,23 @@ public class CubeRegion extends Region {
 	public CubeRegion(String name, String worldName, Plugin plugin) {
 		super(name, Regional.getNextId(), worldName, plugin);
 	}
-	
-	/**
-	 * CubeRegions can only contain other Cubes or CubeRegions
-	 * 
-	 */
-	public boolean contains(Object obj) {
-		if (obj instanceof Cube)
-			return this.cubeSet.contains(obj);
-		else
-			return false;
-	}
 
 	@Override
 	public boolean containsPoint(Location loc) {
-		return contains(new Cube(loc));
+		return containsCube(new Cube(loc));
 	}
 
+	/**
+	 * Tests if this cube is contained within the region
+	 * 
+	 * @param cube
+	 * @return
+	 */
+	@Override
+	public boolean containsCube(Cube cube) {
+		return cubeSet.contains(cube);
+	}
+	
 	/**
 	 * Tests if the cubeSet is wholly contained within this region.
 	 * If it is, the contained region must be considered a sub-region.

@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
+import com.sleaker.regional.area.Cube;
 import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.StateFlag;
 
@@ -293,28 +294,34 @@ public abstract class Region implements Comparable<Region> {
 	//  Region Test Methods
 	//----------------------------//
 
+	/**
+	 * Tests if the Region contains all of the cubes
+	 * 
+	 * @param cubes
+	 * @return true/false
+	 */
+	public abstract boolean containsAll(Set<Cube> cubes);
 
 	/**
-	 * Tests if the object is contained within the region
-	 * 
+	 * Tests if the Region contains the cube 
+	 *
 	 * @param cube
-	 * @return
+	 * @return true/false
 	 */
-	public abstract boolean contains(Object obj);
-
-
+	public abstract boolean containsCube(Cube cube);
+	
 	/**
 	 * Tests if the Location is somewhere within this region
 	 * 
 	 * @param loc
-	 * @return
+	 * @return true/false
 	 */
 	public abstract boolean containsPoint(Location loc);
 
 	/**
 	 * Gets the total volume in Cubes.
 	 * 
-	 * @return
+	 * @return int
 	 */
 	public abstract int volume();
 
