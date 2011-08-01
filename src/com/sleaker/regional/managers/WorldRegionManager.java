@@ -55,7 +55,7 @@ public class WorldRegionManager {
 	public boolean addRegion(CubeRegion region) {
 		if (!regionMap.containsKey(region.getId())) {
 			//Check if this region should have a parent even though one was not defined
-			if (region.getParent() == null)
+			if (region.getParentId() == -1)
 				//TODO: Check if this region should have any parents
 			
 			regionMap.put(region.getId(), region);

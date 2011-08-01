@@ -1,6 +1,7 @@
 package com.sleaker.regional.regions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.area.Cube;
 import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.StateFlag;
+import com.sleaker.regional.managers.WorldRegionManager;
 
 /**
  * Defines a Generic Region object
@@ -45,7 +47,7 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * The associated parent region for this Region
 	 */
-	private Region parent = null;
+	private short parentId = -1;
 
 	/**
 	 * The weight that this region has. Higher weighted regions have presedence over lower weighted regions
@@ -83,6 +85,16 @@ public abstract class Region implements Comparable<Region> {
 
 	Region(String name, short id, String worldName, Plugin plugin) {
 		this(name, id, worldName, null, plugin);
+	}
+	
+	Region(String name, short id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, short parentId) {
+		this.name = name;
+		this.id = id;
+		this.worldName = worldName;
+		this.privs = privs;
+		this.weight = weight;
+		this.namespaces.addAll(namespaces);
+		this.parentId = parentId;
 	}
 
 	//----------------------//
@@ -206,30 +218,27 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * Attempts to set the parent of this Region
 	 * 
-	 * @author sk89q
 	 * @param parent
 	 * @throws CircularInheritenceException
 	 * @throws UnacceptableInheritenceException 
 	 */
-	public void setParent(Region parent) throws CircularInheritenceException, UnacceptableInheritenceException {
-		if (parent == null) {
-			this.parent = null;
+	public void setParent(short parentId, WorldRegionManager wrm) throws CircularInheritenceException {
+		if (parentId == -1) {
+			this.parentId = -1;
 		} 
-		if (this instanceof ChunkRegion && parent instanceof CubeRegion)
-			throw new UnacceptableInheritenceException();
 		
-		Region p = parent;
-		while (p != null) {
-			if (p == this)
+		short p = parentId;
+		while (p != -1) {
+			if (p == this.id)
 				throw new CircularInheritenceException();
 			
-			p = p.getParent();
+			p = wrm.getRegion(p).getParentId();
 		}
-		this.parent = parent;
+		this.parentId = parentId;
 	}
 
-	public Region getParent() {
-		return parent;
+	public short getParentId() {
+		return parentId;
 	}
 	
 	//--------------------------//
@@ -324,7 +333,7 @@ public abstract class Region implements Comparable<Region> {
 	 * @param cubes
 	 * @return true/false
 	 */
-	public abstract boolean containsAll(Set<Cube> cubes);
+	public abstract boolean containsAll(Collection<Cube> cubes);
 
 	/**
 	 * Tests if the Region contains the cube 
@@ -385,15 +394,5 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	public static class CircularInheritenceException extends Exception {
 		private static final long serialVersionUID = -3626449351263374520L;
-	}
-	
-	/**
-	 * Thrown when setting the parrent, when a chunk type being set as a parent
-	 * is not able to be set as a parent region
-	 * @author sleak
-	 */
-	public static class UnacceptableInheritenceException extends Exception {
-		private static final long serialVersionUID = 7010178538921122758L;
-		
 	}
 }

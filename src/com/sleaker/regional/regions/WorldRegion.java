@@ -1,6 +1,6 @@
 package com.sleaker.regional.regions;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -48,17 +48,16 @@ public class WorldRegion extends Region {
 		return "world";
 	}
 
+	@Override
+	public boolean containsCube(Cube cube) {
+		return (cube.worldName == this.worldName);	
+	}
 
 	@Override
-	public boolean containsAll(Set<Cube> cubes) {
+	public boolean containsAll(Collection<Cube> cubes) {
 		for (Cube cube : cubes)
 			return cube.worldName == this.worldName;
 		
 		return false;
-	}
-
-	@Override
-	public boolean containsCube(Cube cube) {
-		return (cube.worldName == this.worldName);	
 	}
 }

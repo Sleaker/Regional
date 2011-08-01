@@ -47,6 +47,14 @@ public class Cube {
 		this.worldName = chunk.getWorld().getName();
 	}
 
+	public Cube(String cube, String worldName) throws NumberFormatException {
+		String[] vals = cube.split(",");
+		this.x = Integer.parseInt(vals[0]);
+		this.y = Integer.parseInt(vals[1]);
+		this.z = Integer.parseInt(vals[2]);
+		this.worldName = worldName;
+	}
+
 	@Override
 	public int hashCode() {
 		int hash = 3;

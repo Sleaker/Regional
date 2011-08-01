@@ -1,6 +1,7 @@
 package com.sleaker.regional.regions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +38,10 @@ public class CubeRegion extends Region {
 	public CubeRegion(String name, String worldName, Plugin plugin) {
 		super(name, Regional.getNextId(), worldName, plugin);
 	}
+	
+	public CubeRegion(String name, short id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, short parentId) {
+		super(name, id, worldName, privs, weight, namespaces, parentId);
+	}
 
 	@Override
 	public boolean containsPoint(Location loc) {
@@ -61,7 +66,7 @@ public class CubeRegion extends Region {
 	 * @param cubes
 	 * @return
 	 */
-	public boolean containsAll(Set<Cube> cubes) {
+	public boolean containsAll(Collection<Cube> cubes) {
 		return cubeSet.containsAll(cubes);
 	}
 
@@ -79,10 +84,15 @@ public class CubeRegion extends Region {
 	 * 
 	 * @param cubes
 	 */
-	public void addCubes(Set<Cube> cubes) {
+	public void addCubes(Collection<Cube> cubes) {
 		this.cubeSet.addAll(cubes);
 	}
-
+	
+	/**
+	 * Gets a list collection of all cubes contained in the region
+	 * 
+	 * @return
+	 */
 	public List<Cube> getCubes() {
 		List<Cube> cubeList = new ArrayList<Cube>();
 		cubeList.addAll(cubeSet);

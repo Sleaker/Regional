@@ -1,5 +1,7 @@
 package com.sleaker.regional.persistence;
 
+import java.io.File;
+
 import com.sleaker.regional.regions.CubeRegion;
 
 public interface StorageHandler {
@@ -8,9 +10,17 @@ public interface StorageHandler {
 	 * Load all of a worlds regions into memory
 	 * 
 	 * @param worldName
-	 * @return
+	 * @return Whether all regions were loaded successfully
 	 */
-	public CubeRegion loadRegions(String worldName);
+	public boolean loadRegions(String worldName);
+	
+	/**
+	 * Load the Region from the specified filename
+	 * 
+	 * @param fileName
+	 * @return Whether the region was loaded sucessfully
+	 */
+	public boolean loadRegion(File regionFile);
 	
 	/**
 	 * Save one Region to storage
