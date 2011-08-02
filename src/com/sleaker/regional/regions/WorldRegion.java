@@ -3,7 +3,8 @@ package com.sleaker.regional.regions;
 import java.util.Collection;
 
 import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
+
+import com.herocraftonline.dthielke.lists.PrivilegedList;
 
 
 /**
@@ -13,9 +14,9 @@ import org.bukkit.plugin.Plugin;
  *
  */
 public class WorldRegion extends Region {
-
-	protected WorldRegion(String name, short id, String worldName, Plugin plugin) {
-		super(name, id, worldName, plugin);
+	
+	public WorldRegion(String name, short id, String worldName, PrivilegedList privs) {
+		super(name, id, worldName, privs);
 		this.weight = -1;
 	}
 	

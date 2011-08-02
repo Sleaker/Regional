@@ -12,7 +12,7 @@ import com.sleaker.regional.Regional;
 
 public class ChunkRegion extends CubeRegion {
 
-	protected ChunkRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
+	public ChunkRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
 		super(name, id, worldName, privs, plugin);
 	}
 
@@ -20,6 +20,10 @@ public class ChunkRegion extends CubeRegion {
 		super(name, Regional.getNextId(), worldName, privs, plugin);
 	}
 	
+	public ChunkRegion(String name, short id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, short parent) {
+		super(name, id, worldName, privs, weight, namespaces, parent);
+	}
+
 	/**
 	 * Add a single chunk to the region
 	 * 

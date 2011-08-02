@@ -18,9 +18,11 @@ import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.IntegerFlag;
 import com.sleaker.regional.flags.StateFlag;
 import com.sleaker.regional.flags.StringFlag;
+import com.sleaker.regional.regions.ChunkRegion;
 import com.sleaker.regional.regions.Cube;
 import com.sleaker.regional.regions.CubeRegion;
 import com.sleaker.regional.regions.Region;
+import com.sleaker.regional.regions.WorldRegion;
 
 public class YMLStorageHandler implements StorageHandler {
 
@@ -45,21 +47,26 @@ public class YMLStorageHandler implements StorageHandler {
 	}
 
 	@Override
-	public boolean loadRegion(File regionFile) {
+	public Region loadRegion(File regionFile) {
 		Configuration regionConfig = new Configuration(regionFile);
 		regionConfig.load();
 		String name = regionConfig.getString("name");
 		short id = (short) regionConfig.getInt("id", Regional.getNextId());
 		String worldName = regionConfig.getString("world");
+		String type = regionConfig.getString("type");
 		short parent = (short) regionConfig.getInt("parent", -1);
 		List<String> namespaces = regionConfig.getStringList("namespaces", new ArrayList<String>());
 		//TODO: priviliged list 
 		PrivilegedList privs = null;
 		byte weight = (byte) regionConfig.getInt("weight", 0);
-		//TODO: Custom/Enum flags
 
-		if (regionConfig.getString("type").equals("cube") ) {
-			CubeRegion region = new CubeRegion(name, id, worldName, privs, weight, namespaces, parent);
+		if (type.equals("cube") || type.equals("chunk")) {
+			CubeRegion region;
+			if (type.equals("cube"))
+				region = new CubeRegion(name, id, worldName, privs, weight, namespaces, parent);
+			else
+				region = new ChunkRegion(name, id, worldName, privs, weight, namespaces, parent);
+
 			loadFlags(region, regionConfig);
 			List<Cube> cubeList = new ArrayList<Cube>();
 			for(String cube : regionConfig.getStringList("cubes", new ArrayList<String>())) {
@@ -70,13 +77,15 @@ public class YMLStorageHandler implements StorageHandler {
 					continue;
 				}
 			}
-		} else if (regionConfig.getString("type").equals("chunk")) {
-
-		} else if (regionConfig.getString("type").equals("world")) {
-
+			region.addCubes(cubeList);
+			return region;
+		} else if (type.equals("world")) {
+			WorldRegion region = new WorldRegion(name, id, worldName, privs);
+			loadFlags(region, regionConfig);
+			return region;
 		}
 
-		return true;
+		return null;
 	}
 
 	private void loadFlags(Region region, Configuration regionConfig) {
@@ -134,9 +143,9 @@ public class YMLStorageHandler implements StorageHandler {
 		}
 	}
 
-	
+
 	@Override
-	public boolean saveRegion(CubeRegion region) {
+	public boolean saveRegion(Region region) {
 		String regionDir = plugin.getDataFolder() + File.separator + region.getWorldName() + File.separator;
 		File regionFile = new File(regionDir + region.getId() + ".yml");
 		Configuration regionConfig;
@@ -160,11 +169,14 @@ public class YMLStorageHandler implements StorageHandler {
 		regionConfig.setProperty("type", region.getTypeName());
 		regionConfig.setProperty("weight", region.getWeight());
 
-		List<String> cubeStrings = new ArrayList<String>();
-		for (Cube cube : region.getCubes())
-			cubeStrings.add(cube.toString());
+		if (region instanceof CubeRegion) {
+			CubeRegion cRegion = (CubeRegion) region;
+			List<String> cubeStrings = new ArrayList<String>();
+			for (Cube cube : cRegion.getCubes())
+				cubeStrings.add(cube.toString());
 
-		regionConfig.setProperty("cubes", cubeStrings);
+			regionConfig.setProperty("cubes", cubeStrings); 
+		}
 
 		//Dump all custom flags
 		Iterator<Flag<?>> iter = region.getCustomFlags().keySet().iterator();
@@ -180,6 +192,7 @@ public class YMLStorageHandler implements StorageHandler {
 		}
 		regionConfig.setProperty("flags.state", flagList);
 
+		regionConfig.save();
 		return true;
 	}
 

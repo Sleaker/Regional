@@ -25,7 +25,7 @@ public class CubeRegion extends Region {
 	 */
 	Set<Cube> cubeSet = new HashSet<Cube>();
 
-	protected CubeRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
+	public CubeRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
 		super(name, id, worldName, privs, plugin);
 	}
 

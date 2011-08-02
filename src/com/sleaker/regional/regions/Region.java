@@ -73,6 +73,7 @@ public abstract class Region implements Comparable<Region> {
 	//-------------------------//
 	//    Constructors
 	//-------------------------//
+	
 	Region(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
@@ -95,11 +96,18 @@ public abstract class Region implements Comparable<Region> {
 		this.namespaces.addAll(namespaces);
 		this.parentId = parentId;
 	}
+	
+	Region(String name, short id, String worldName, PrivilegedList privs) {
+		this.name = name;
+		this.id = id;
+		this.worldName = worldName;
+		this.privs = privs;
+	}
 
 	//----------------------//
 	//  Basic Data Getters
 	//----------------------//
-	
+
 	/**
 	 * @return the name
 	 */
