@@ -12,13 +12,13 @@ import org.bukkit.util.config.Configuration;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.Regional;
-import com.sleaker.regional.area.Cube;
 import com.sleaker.regional.flags.BooleanFlag;
 import com.sleaker.regional.flags.DoubleFlag;
 import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.IntegerFlag;
 import com.sleaker.regional.flags.StateFlag;
 import com.sleaker.regional.flags.StringFlag;
+import com.sleaker.regional.regions.Cube;
 import com.sleaker.regional.regions.CubeRegion;
 import com.sleaker.regional.regions.Region;
 

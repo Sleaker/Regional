@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.sleaker.regional.area.Cube;
+import com.sleaker.regional.regions.Cube;
 import com.sleaker.regional.regions.CubeRegion;
 import com.sleaker.regional.regions.Region;
 

@@ -1,4 +1,4 @@
-package com.sleaker.regional.area;
+package com.sleaker.regional.regions;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;

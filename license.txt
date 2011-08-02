@@ -6,6 +6,4 @@ It is available at: http://creativecommons.org/licenses/by-nc-nd/3.0/
 You may NOT remove this license, maintain your own version, or use code contained in this repository 
 for any use I deem unacceptable without prior approval.  If you want to use code from this project, ask first.
 
-Any code code from WorldGuard is licensed under the GNU GPL, license information can be found in the files with which it applies.
-
 The code presented in this repository is for viewing purposes ONLY.

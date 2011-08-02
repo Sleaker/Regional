@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
-import com.sleaker.regional.area.Cube;
 
 /**
  * Defines a Region for a specific World

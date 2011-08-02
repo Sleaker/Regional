@@ -11,7 +11,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.Regional;
-import com.sleaker.regional.area.Cube;
 
 /**
  * Defines a CubeRegion which is made up of 16x16x16 cubes (Partial chunks)

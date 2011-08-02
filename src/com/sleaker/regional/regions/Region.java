@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
-import com.sleaker.regional.area.Cube;
 import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.StateFlag;
 import com.sleaker.regional.managers.WorldRegionManager;

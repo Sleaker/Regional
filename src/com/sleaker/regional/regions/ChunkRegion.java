@@ -9,7 +9,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.Regional;
-import com.sleaker.regional.area.Cube;
 
 public class ChunkRegion extends CubeRegion {
 
