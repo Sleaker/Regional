@@ -7,11 +7,6 @@ public class StringFlag extends Flag<String> {
     }
 
     @Override
-    public String parse(String input) throws InvalidFlagFormat {
-        return input;
-    }
-
-    @Override
     public String objectToType(Object o) {
         if (o instanceof String) {
             return (String) o;

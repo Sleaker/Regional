@@ -36,15 +36,6 @@ public abstract class Flag<T> {
 	public String getTypeName() {
 		return this.type.getName();
 	}
-	
-	/**
-	 * Converts a string into the appropriate flag
-	 * 
-	 * @param input
-	 * @return
-	 * @throws InvalidFlagFormat
-	 */
-	public abstract T parse(String input) throws InvalidFlagFormat;
 
 	/**
 	 * Returns a Type casted variable of object o
