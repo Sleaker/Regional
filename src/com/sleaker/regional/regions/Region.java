@@ -127,6 +127,25 @@ public abstract class Region implements Comparable<Region> {
 	//--------------------------//
 
 	/**
+	 * Adds all flags from another collection
+	 * 
+	 */
+	public void addFlags(Collection<StateFlag> flags) {
+		standardFlags.addAll(flags);
+	}
+	
+	/**
+	 * Adds a custom flag of type T to the custom flag map
+	 * 
+	 * @param <T>
+	 * @param flag
+	 * @param obj
+	 */
+	public <T> void addFlag(Flag<T> flag, Object obj) {
+		customFlags.put(flag, obj);
+	}
+	
+	/**
 	 * Add a flag to the Region
 	 * Flags added to the set are active (true)
 	 * 
@@ -151,8 +170,8 @@ public abstract class Region implements Comparable<Region> {
 	 * 
 	 * @param name
 	 */
-	public <T> void removeFlag(T flag) {
-		customFlags.remove(name);
+	public <T> void removeFlag(Flag<T> flag) {
+		customFlags.remove(flag.getName());
 	}
 
 	/**
@@ -174,7 +193,7 @@ public abstract class Region implements Comparable<Region> {
 		}
 		return val;
 	}
-
+	
 	/**
 	 * Set a custom flag's value.
 	 * Setting a flag to a null value will instead remove that flag
@@ -191,9 +210,9 @@ public abstract class Region implements Comparable<Region> {
 			customFlags.put(flag, val);
 		}
 	}
-
+	
 	/**
-	 * Returns the customFlags map.  Any access done on this map must be synchronized.
+	 * Returns the customFlags map.
 	 * @return
 	 */
 	public Map<Flag<?>, Object> getCustomFlags() {

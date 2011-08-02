@@ -13,9 +13,14 @@ import org.bukkit.util.config.Configuration;
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.Regional;
 import com.sleaker.regional.area.Cube;
+import com.sleaker.regional.flags.BooleanFlag;
+import com.sleaker.regional.flags.DoubleFlag;
 import com.sleaker.regional.flags.Flag;
+import com.sleaker.regional.flags.IntegerFlag;
 import com.sleaker.regional.flags.StateFlag;
+import com.sleaker.regional.flags.StringFlag;
 import com.sleaker.regional.regions.CubeRegion;
+import com.sleaker.regional.regions.Region;
 
 public class YMLStorageHandler implements StorageHandler {
 
@@ -55,6 +60,7 @@ public class YMLStorageHandler implements StorageHandler {
 
 		if (regionConfig.getString("type").equals("cube") ) {
 			CubeRegion region = new CubeRegion(name, id, worldName, privs, weight, namespaces, parent);
+			loadFlags(region, regionConfig);
 			List<Cube> cubeList = new ArrayList<Cube>();
 			for(String cube : regionConfig.getStringList("cubes", new ArrayList<String>())) {
 				try {
@@ -73,6 +79,62 @@ public class YMLStorageHandler implements StorageHandler {
 		return true;
 	}
 
+	private void loadFlags(Region region, Configuration regionConfig) {
+		//Load the state flags
+		for (int flagId : regionConfig.getIntList("flags.state", new ArrayList<Integer>())) {
+			region.addFlag(StateFlag.getFlag(flagId));
+		}
+
+		//Load boolean flags
+		if (regionConfig.getNodes("flags.boolean") != null) {
+			Iterator<String> iter = regionConfig.getNodes("flags.boolean").keySet().iterator();
+			while(iter.hasNext()) {
+				String nodeName = iter.next();
+				BooleanFlag flag = new BooleanFlag(nodeName);
+				boolean val = Boolean.parseBoolean(regionConfig.getString("flags.boolean." + nodeName));
+				region.addFlag(flag, val);
+			}
+		}
+		//Load the integer flag
+		if (regionConfig.getNodes("flags.integer") != null) {
+			Iterator<String> iter = regionConfig.getNodes("flags.integer").keySet().iterator();
+			while (iter.hasNext()) {
+				String nodeName = iter.next();
+				IntegerFlag flag = new IntegerFlag(nodeName);
+				try {
+					int val = Integer.parseInt(regionConfig.getString("flags.integer." + nodeName));
+					region.addFlag(flag, val);
+				} catch (NumberFormatException e) {
+					continue;
+				}
+			}
+		}
+		//Load the double flags
+		if (regionConfig.getNodes("flags.double") != null) {
+			Iterator<String> iter = regionConfig.getNodes("flags.double").keySet().iterator();
+			while (iter.hasNext()) {
+				String nodeName = iter.next();
+				DoubleFlag flag = new DoubleFlag(nodeName);
+				try {
+					double val = Double.parseDouble(regionConfig.getString("flags.double." + nodeName));
+					region.addFlag(flag, val);
+				} catch (NumberFormatException e) {
+					continue;
+				}
+			}
+		}
+		//Load the String Flags
+		if (regionConfig.getNodes("flags.string") != null) {
+			Iterator<String> iter = regionConfig.getNodes("flags.string").keySet().iterator();
+			while (iter.hasNext()) {
+				String nodeName = iter.next();
+				StringFlag flag = new StringFlag(nodeName);
+				region.addFlag(flag, regionConfig.getString("flags.string." + nodeName));
+			}
+		}
+	}
+
+	
 	@Override
 	public boolean saveRegion(CubeRegion region) {
 		String regionDir = plugin.getDataFolder() + File.separator + region.getWorldName() + File.separator;
@@ -108,13 +170,15 @@ public class YMLStorageHandler implements StorageHandler {
 		Iterator<Flag<?>> iter = region.getCustomFlags().keySet().iterator();
 		while(iter.hasNext()) {
 			Flag<?> flag = iter.next();
-			regionConfig.setProperty("flags.custom." + flag.getName(), flag.unmarshal(region.getCustomFlag(flag)));
+			regionConfig.setProperty("flags." + flag.getTypeName() + "." + flag.getName(), flag.objectToType(region.getCustomFlag(flag)));
 		}
 
 		//Dump all state flags
+		List<Integer> flagList = new ArrayList<Integer>();
 		for (StateFlag flag : region.getFlags()) {
-			regionConfig.setProperty("flags.standard." + flag.getName(), true);
+			flagList.add(flag.getId());
 		}
+		regionConfig.setProperty("flags.state", flagList);
 
 		return true;
 	}
