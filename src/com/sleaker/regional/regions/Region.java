@@ -246,7 +246,6 @@ public abstract class Region implements Comparable<Region> {
 	 * 
 	 * @param parent
 	 * @throws CircularInheritenceException
-	 * @throws UnacceptableInheritenceException 
 	 */
 	public void setParent(short parentId, WorldRegionManager wrm) throws CircularInheritenceException {
 		if (parentId == -1) {
@@ -413,11 +412,6 @@ public abstract class Region implements Comparable<Region> {
 		return this.id;
 	}
 	
-	/**
-	 * Thrown when setting the parent if it would result in circular parenting
-	 * 
-	 * @author sk89q
-	 */
 	public static class CircularInheritenceException extends Exception {
 		private static final long serialVersionUID = -3626449351263374520L;
 	}

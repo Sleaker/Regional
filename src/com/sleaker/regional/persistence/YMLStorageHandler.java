@@ -18,6 +18,7 @@ import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.IntegerFlag;
 import com.sleaker.regional.flags.StateFlag;
 import com.sleaker.regional.flags.StringFlag;
+import com.sleaker.regional.managers.UniverseRegionManager;
 import com.sleaker.regional.regions.ChunkRegion;
 import com.sleaker.regional.regions.Cube;
 import com.sleaker.regional.regions.CubeRegion;
@@ -36,11 +37,17 @@ public class YMLStorageHandler implements StorageHandler {
 
 	@Override
 	public boolean loadRegions(String worldName) {
+		UniverseRegionManager uRM = plugin.getUniverseRegionManager();
 		String regionDirName = plugin.getDataFolder() + File.separator + worldName + File.separator;
 		File regionDir = new File(regionDirName);
 
 		for (File file : regionDir.listFiles()) {
-			loadRegion(file);
+			Region region = loadRegion(file);
+			if (region instanceof WorldRegion) {
+				uRM.loadWorldRegion((WorldRegion) region);
+			} else if (region instanceof CubeRegion) {
+				uRM.getWorldRegionManager(worldName).addRegion((CubeRegion) region);
+			}
 		}
 
 		return true;
