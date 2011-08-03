@@ -31,7 +31,7 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * Unique id for the Region
 	 */
-	final short id;
+	final int id;
 
 	/**
 	 * What world this region is a part of
@@ -46,7 +46,7 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * The associated parent region for this Region
 	 */
-	private short parentId = -1;
+	private int parentId = -1;
 
 	/**
 	 * The weight that this region has. Higher weighted regions have presedence over lower weighted regions
@@ -74,7 +74,7 @@ public abstract class Region implements Comparable<Region> {
 	//    Constructors
 	//-------------------------//
 	
-	Region(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
+	Region(String name, int id, String worldName, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
 		this.worldName = worldName;
@@ -83,11 +83,11 @@ public abstract class Region implements Comparable<Region> {
 		namespaces.add(plugin.getDescription().getName());
 	}
 
-	Region(String name, short id, String worldName, Plugin plugin) {
+	Region(String name, int id, String worldName, Plugin plugin) {
 		this(name, id, worldName, null, plugin);
 	}
 	
-	Region(String name, short id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, short parentId) {
+	Region(String name, int id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, int parentId) {
 		this.name = name;
 		this.id = id;
 		this.worldName = worldName;
@@ -97,7 +97,7 @@ public abstract class Region implements Comparable<Region> {
 		this.parentId = parentId;
 	}
 	
-	Region(String name, short id, String worldName, PrivilegedList privs) {
+	Region(String name, int id, String worldName, PrivilegedList privs) {
 		this.name = name;
 		this.id = id;
 		this.worldName = worldName;
@@ -118,7 +118,7 @@ public abstract class Region implements Comparable<Region> {
 	/**
 	 * @return the id
 	 */
-	public short getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -247,12 +247,12 @@ public abstract class Region implements Comparable<Region> {
 	 * @param parent
 	 * @throws CircularInheritenceException
 	 */
-	public void setParent(short parentId, WorldRegionManager wrm) throws CircularInheritenceException {
+	public void setParent(int parentId, WorldRegionManager wrm) throws CircularInheritenceException {
 		if (parentId == -1) {
 			this.parentId = -1;
 		} 
 		
-		short p = parentId;
+		int p = parentId;
 		while (p != -1) {
 			if (p == this.id)
 				throw new CircularInheritenceException();
@@ -262,7 +262,7 @@ public abstract class Region implements Comparable<Region> {
 		this.parentId = parentId;
 	}
 
-	public short getParentId() {
+	public int getParentId() {
 		return parentId;
 	}
 	

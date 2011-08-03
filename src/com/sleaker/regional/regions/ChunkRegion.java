@@ -8,7 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
-import com.sleaker.regional.Regional;
+import com.sleaker.regional.Settings;
 
 public class ChunkRegion extends CubeRegion {
 
@@ -17,7 +17,7 @@ public class ChunkRegion extends CubeRegion {
 	}
 
 	public ChunkRegion(String name, String worldName, PrivilegedList privs, Plugin plugin) {
-		super(name, Regional.getNextId(), worldName, privs, plugin);
+		super(name, Settings.getNextId(), worldName, privs, plugin);
 	}
 	
 	public ChunkRegion(String name, short id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, short parent) {

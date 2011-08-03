@@ -17,23 +17,23 @@ import com.sleaker.regional.regions.Region;
  */
 public class WorldRegionManager {
 
-	private Map<Short, CubeRegion> regionMap;
+	private Map<Integer, CubeRegion> regionMap;
 
 	private Map<Cube, Set<CubeRegion>> areaMap;
 
 	public WorldRegionManager() {
-		regionMap = new HashMap<Short, CubeRegion>();
+		regionMap = new HashMap<Integer, CubeRegion>();
 		areaMap = new HashMap<Cube, Set<CubeRegion>>();
 	}
 
 	/**
 	 * Gets the region from id
 	 * 
-	 * @param id
+	 * @param p
 	 * @return Region
 	 */
-	public Region getRegion(short id) {
-		return regionMap.get(id);
+	public Region getRegion(int p) {
+		return regionMap.get(p);
 	}
 
 	/**

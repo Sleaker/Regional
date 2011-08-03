@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
-import com.sleaker.regional.Regional;
+import com.sleaker.regional.Settings;
 
 /**
  * Defines a CubeRegion which is made up of 16x16x16 cubes (Partial chunks)
@@ -25,20 +25,20 @@ public class CubeRegion extends Region {
 	 */
 	Set<Cube> cubeSet = new HashSet<Cube>();
 
-	public CubeRegion(String name, short id, String worldName, PrivilegedList privs, Plugin plugin) {
+	public CubeRegion(String name, int id, String worldName, PrivilegedList privs, Plugin plugin) {
 		super(name, id, worldName, privs, plugin);
 	}
 
 	public CubeRegion(String name, String worldName, PrivilegedList privs, Plugin plugin, Set<Cube> cubeSet) {
-		super(name, Regional.getNextId(), worldName, privs, plugin);
+		super(name, Settings.getNextId(), worldName, privs, plugin);
 		this.cubeSet = cubeSet;
 	}
 	
 	public CubeRegion(String name, String worldName, Plugin plugin) {
-		super(name, Regional.getNextId(), worldName, plugin);
+		super(name, Settings.getNextId(), worldName, plugin);
 	}
 	
-	public CubeRegion(String name, short id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, short parentId) {
+	public CubeRegion(String name, int id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, int parentId) {
 		super(name, id, worldName, privs, weight, namespaces, parentId);
 	}
 

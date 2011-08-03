@@ -15,8 +15,7 @@ public class Regional extends JavaPlugin {
 	private Logger log = Logger.getLogger("Minecraft");
 	private UniverseRegionManager universeRegionManager;
 	private Lists lists = null;
-	
-	private static short nextId = 0;
+	private Settings settings;
 	
 	@Override
 	public void onDisable() {
@@ -28,22 +27,20 @@ public class Regional extends JavaPlugin {
 		plugName = "[" + this.getDescription().getName() + "]";
 		PluginManager pm = this.getServer().getPluginManager();
 		
+		//Setup dependencies - disable the plugin if these fail
 		if (!setupDependencies()) {
 			pm.disablePlugin(this);
+			log.severe(plugName + " Unable to load dependencies, disabling!");
 			return;
 		}
 		
-		universeRegionManager = new UniverseRegionManager();
+		//Load our settings file
+		settings = new Settings(this);
+		
+		//Instantiate our universe manager
+		universeRegionManager = new UniverseRegionManager(this);
 		
 		log.info(plugName + " v" + this.getDescription().getVersion() + " by " + this.getDescription().getAuthors() + " enabled!");
-	}
-
-	/**
-	 * Return the next available id
-	 * @return
-	 */
-	public static short getNextId() {
-		return nextId++;
 	}
 
 	/**
@@ -58,6 +55,13 @@ public class Regional extends JavaPlugin {
 	 */
 	public Lists getLists() {
 		return lists;
+	}
+
+	/**
+	 * @return the settings
+	 */
+	public Settings getSettings() {
+		return settings;
 	}
 
 	private boolean setupDependencies() {

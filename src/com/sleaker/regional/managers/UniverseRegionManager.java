@@ -3,6 +3,9 @@ package com.sleaker.regional.managers;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sleaker.regional.Regional;
+import com.sleaker.regional.persistence.StorageHandler;
+import com.sleaker.regional.persistence.YMLStorageHandler;
 import com.sleaker.regional.regions.WorldRegion;
 
 /**
@@ -22,9 +25,12 @@ public class UniverseRegionManager {
 	 */
 	private Map<String, WorldRegion> worldRegions;
 	
-	public UniverseRegionManager() {
+	private StorageHandler regionStore;
+	
+	public UniverseRegionManager(Regional plugin) {
 		worldManagers = new HashMap<String, WorldRegionManager>();
 		worldRegions = new HashMap<String, WorldRegion>();
+		loadStorage(plugin);
 	}
 	
 	/**
@@ -62,8 +68,9 @@ public class UniverseRegionManager {
 	 * @param worldName
 	 * @return
 	 */
-	public WorldRegionManager load(String worldName) {
-		return null;
+	public void loadWorldRegions(String worldName) {
+		worldManagers.put(worldName, new WorldRegionManager());
+		regionStore.loadRegions(worldName);
 	}
 	
 	/**
@@ -82,5 +89,13 @@ public class UniverseRegionManager {
 	public void unload(String worldName) {
 		worldManagers.remove(worldName);
 		worldRegions.remove(worldName);
+	}
+	
+	private void loadStorage(Regional plugin) {
+		if (plugin.getSettings().getStorageType().contains("yml")) {
+			regionStore = new YMLStorageHandler(plugin);
+		} else if (plugin.getSettings().getStorageType().contains("sql")) {
+			return;
+		}
 	}
 }

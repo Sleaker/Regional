@@ -12,6 +12,7 @@ import org.bukkit.util.config.Configuration;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.Regional;
+import com.sleaker.regional.Settings;
 import com.sleaker.regional.flags.BooleanFlag;
 import com.sleaker.regional.flags.DoubleFlag;
 import com.sleaker.regional.flags.Flag;
@@ -58,7 +59,8 @@ public class YMLStorageHandler implements StorageHandler {
 		Configuration regionConfig = new Configuration(regionFile);
 		regionConfig.load();
 		String name = regionConfig.getString("name");
-		short id = (short) regionConfig.getInt("id", Regional.getNextId());
+		plugin.getSettings();
+		short id = (short) regionConfig.getInt("id", Settings.getNextId());
 		String worldName = regionConfig.getString("world");
 		String type = regionConfig.getString("type");
 		short parent = (short) regionConfig.getInt("parent", -1);
