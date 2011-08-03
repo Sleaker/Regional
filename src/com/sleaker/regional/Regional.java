@@ -64,6 +64,11 @@ public class Regional extends JavaPlugin {
 		return settings;
 	}
 
+	/**
+	 * Sets up the dependencies for Regional
+	 * 
+	 * @return Whether dependencies were found!
+	 */
 	private boolean setupDependencies() {
 		Plugin listsPlugin = this.getServer().getPluginManager().getPlugin("Lists");
 		if (listsPlugin != null) {
