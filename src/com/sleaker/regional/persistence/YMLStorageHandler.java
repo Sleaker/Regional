@@ -63,8 +63,7 @@ public class YMLStorageHandler implements StorageHandler {
 		String type = regionConfig.getString("type");
 		short parent = (short) regionConfig.getInt("parent", -1);
 		List<String> namespaces = regionConfig.getStringList("namespaces", new ArrayList<String>());
-		//TODO: priviliged list 
-		PrivilegedList privs = null;
+		PrivilegedList privs = plugin.getLists().getList(regionConfig.getString("priviliged-list"));
 		byte weight = (byte) regionConfig.getInt("weight", 0);
 
 		if (type.equals("cube") || type.equals("chunk")) {
