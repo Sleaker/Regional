@@ -2,20 +2,29 @@ package com.sleaker.regional;
 
 import java.util.logging.Logger;
 
+import org.bukkit.World;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.herocraftonline.dthielke.lists.Lists;
+import com.sleaker.regional.listeners.RegionalBlockListener;
+import com.sleaker.regional.listeners.RegionalPlayerListener;
+import com.sleaker.regional.listeners.RegionalWorldListener;
 import com.sleaker.regional.managers.UniverseRegionManager;
 
 public class Regional extends JavaPlugin {
 
 	private String plugName;
 	private Logger log = Logger.getLogger("Minecraft");
-	private UniverseRegionManager universeRegionManager;
+	private UniverseRegionManager uManager;
 	private Lists lists = null;
 	private Settings settings;
+	private RegionalWorldListener wListener;
+	private RegionalPlayerListener pListener;
+	private RegionalBlockListener bListener;
 	
 	@Override
 	public void onDisable() {
@@ -38,7 +47,31 @@ public class Regional extends JavaPlugin {
 		settings = new Settings(this);
 		
 		//Instantiate our universe manager
-		universeRegionManager = new UniverseRegionManager(this);
+		uManager = new UniverseRegionManager(this);
+		
+		//Load in regions for worlds that are loaded
+		for (World world : this.getServer().getWorlds()) {
+			if (uManager.getWorldRegionManager(world.getName()) == null) {
+				uManager.loadWorldRegion(world.getName());
+				uManager.loadWorldRegions(world.getName());
+			}
+		}
+		
+		//World Event
+		wListener = new RegionalWorldListener(this);
+		pm.registerEvent(Event.Type.WORLD_LOAD, wListener, Priority.Monitor, this);
+		
+		//Block Events
+		bListener = new RegionalBlockListener();
+		//pm.registerEvent(Event.Type.BLOCK_BREAK, bListener, Priority.High, this);
+		//pm.registerEvent(Event.Type.BLOCK_DAMAGE, bListener, Priority.High, this);
+		
+		
+		//If the settings are set to monitor on-move then lets go ahead and enable it
+		if (settings.isOnMove()) {
+			pListener = new RegionalPlayerListener();
+			pm.registerEvent(Event.Type.PLAYER_MOVE, pListener, Priority.Monitor, this);
+		}
 		
 		log.info(plugName + " v" + this.getDescription().getVersion() + " by " + this.getDescription().getAuthors() + " enabled!");
 	}
@@ -47,11 +80,11 @@ public class Regional extends JavaPlugin {
 	 * @return the UniverseRegionManager
 	 */
 	public UniverseRegionManager getUniverseRegionManager() {
-		return universeRegionManager;
+		return uManager;
 	}
 	
 	/**
-	 * @return the lists
+	 * @return the lists plugin
 	 */
 	public Lists getLists() {
 		return lists;

@@ -5,6 +5,7 @@ public enum Setting {
 	SQL_NAME("storage.mysql.login", "minecraft"),
 	SQL_PASS("storage.mysql.pass", "password"),
 	SQL_URL("storage.mysql.url", "jdbc:mysql://localhost:3306/regions"),
+	ON_MOVE("onmove-checks", false),
 	REGIONID("region.next-id", 1);
 	
 	public final String node;

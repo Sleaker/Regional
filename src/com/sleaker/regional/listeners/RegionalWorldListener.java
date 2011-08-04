@@ -2,7 +2,6 @@ package com.sleaker.regional.listeners;
 
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.event.world.WorldUnloadEvent;
 
 import com.sleaker.regional.Regional;
 import com.sleaker.regional.managers.UniverseRegionManager;
@@ -21,17 +20,10 @@ public class RegionalWorldListener extends WorldListener {
 	@Override
 	public void onWorldLoad(WorldLoadEvent event) {
 		//if we don't have the loaded worlds right now, then lets load them.
-		if (uManager.getWorldRegionManager(event.getWorld().getName()) == null) {
-			
+		String worldName = event.getWorld().getName();
+		if (uManager.getWorldRegionManager(worldName) == null) {
+			uManager.loadWorldRegion(worldName);
+			uManager.loadWorldRegions(worldName);
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see org.bukkit.event.world.WorldListener#onWorldUnload(org.bukkit.event.world.WorldUnloadEvent)
-	 */
-	@Override
-	public void onWorldUnload(WorldUnloadEvent event) {
-		
-	}
-
 }

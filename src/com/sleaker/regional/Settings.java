@@ -30,6 +30,10 @@ public class Settings {
 		return config.getString(Setting.STORAGE.node, (String) Setting.STORAGE.defaultVal);
 	}
 	
+	public boolean isOnMove() {
+		return config.getBoolean(Setting.ON_MOVE.node, (Boolean) Setting.ON_MOVE.defaultVal);
+	}
+	
 	public static int getNextId() {
 		if (nextId < 1)
 			nextId = config.getInt(Setting.REGIONID.node, (Integer) Setting.REGIONID.defaultVal);
