@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.util.config.Configuration;
@@ -19,7 +21,6 @@ import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.IntegerFlag;
 import com.sleaker.regional.flags.StateFlag;
 import com.sleaker.regional.flags.StringFlag;
-import com.sleaker.regional.managers.UniverseRegionManager;
 import com.sleaker.regional.regions.ChunkRegion;
 import com.sleaker.regional.regions.Cube;
 import com.sleaker.regional.regions.CubeRegion;
@@ -37,21 +38,19 @@ public class YMLStorageHandler implements StorageHandler {
 	}
 
 	@Override
-	public boolean loadRegions(String worldName) {
-		UniverseRegionManager uRM = plugin.getUniverseRegionManager();
+	public Set<Region> loadRegions(String worldName) {
 		String regionDirName = plugin.getDataFolder() + File.separator + worldName + File.separator;
 		File regionDir = new File(regionDirName);
+		Set<Region> regions = new HashSet<Region>();
 
 		for (File file : regionDir.listFiles()) {
 			Region region = loadRegion(file);
-			if (region instanceof WorldRegion) {
-				uRM.loadWorldRegion((WorldRegion) region);
-			} else if (region instanceof CubeRegion) {
-				uRM.getWorldRegionManager(worldName).addRegion((CubeRegion) region);
-			}
+			if (region instanceof WorldRegion)
+				continue;
+			else
+				regions.add(region);
 		}
-
-		return true;
+		return regions;
 	}
 
 	@Override

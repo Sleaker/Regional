@@ -1,6 +1,7 @@
 package com.sleaker.regional.persistence;
 
 import java.io.File;
+import java.util.Set;
 
 import com.sleaker.regional.regions.Region;
 
@@ -12,7 +13,7 @@ public interface StorageHandler {
 	 * @param worldName
 	 * @return Whether all regions were loaded successfully
 	 */
-	public boolean loadRegions(String worldName);
+	public Set<Region> loadRegions(String worldName);
 	
 	/**
 	 * Load the Region from the specified filename
