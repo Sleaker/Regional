@@ -46,6 +46,17 @@ public class WorldRegionManager {
 	}
 	
 	/**
+	 * Adds all regions from the collection to the region maps
+	 * 
+	 * @param regions
+	 */
+	public void addRegions(Collection<Region> regions) {
+		for (Region region : regions) 
+			if (region instanceof CubeRegion)
+				addRegion((CubeRegion) region);
+	}
+	
+	/**
 	 * adds the specific region to the regionMap and areaMap
 	 * 
 	 * Returns whether the region was added to the map successfully.
@@ -54,10 +65,6 @@ public class WorldRegionManager {
 	 */
 	public boolean addRegion(CubeRegion region) {
 		if (!regionMap.containsKey(region.getId())) {
-			//Check if this region should have a parent even though one was not defined
-			if (region.getParentId() == -1)
-				//TODO: Check if this region should have any parents
-			
 			regionMap.put(region.getId(), region);
 			for (Cube cube : region.getCubes()) {
 				if (!areaMap.containsKey(cube))

@@ -11,7 +11,7 @@ public interface StorageHandler {
 	 * Load all of a worlds regions into memory
 	 * 
 	 * @param worldName
-	 * @return Whether all regions were loaded successfully
+	 * @return Set of the regions loaded
 	 */
 	public Set<Region> loadRegions(String worldName);
 	

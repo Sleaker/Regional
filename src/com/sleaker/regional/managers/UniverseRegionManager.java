@@ -1,11 +1,14 @@
 package com.sleaker.regional.managers;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.sleaker.regional.Regional;
 import com.sleaker.regional.persistence.StorageHandler;
 import com.sleaker.regional.persistence.YMLStorageHandler;
+import com.sleaker.regional.regions.Region;
 import com.sleaker.regional.regions.WorldRegion;
 
 /**
@@ -14,25 +17,31 @@ import com.sleaker.regional.regions.WorldRegion;
  *
  */
 public class UniverseRegionManager {
-	
+
 	/**
 	 * Set of all World Managers currently loaded
 	 */
 	private Map<String, WorldRegionManager> worldManagers;
-	
+
 	/**
 	 * Set of all World-Specific Regions
 	 */
 	private Map<String, WorldRegion> worldRegions;
-	
+
+	/**
+	 * Instance of the storage handler currently in use
+	 */
 	private StorageHandler regionStore;
-	
+
+	private Regional plugin;
+
 	public UniverseRegionManager(Regional plugin) {
+		this.plugin = plugin;
 		worldManagers = new HashMap<String, WorldRegionManager>();
 		worldRegions = new HashMap<String, WorldRegion>();
 		loadStorage(plugin);
 	}
-	
+
 	/**
 	 * Get a worlds region manager
 	 * 
@@ -42,7 +51,7 @@ public class UniverseRegionManager {
 	public WorldRegionManager getWorldRegionManager(String worldName) {
 		return worldManagers.get(worldName);
 	}
-	
+
 	/**
 	 * Get a worlds Region
 	 * 
@@ -50,18 +59,24 @@ public class UniverseRegionManager {
 	 * @return
 	 */
 	public WorldRegion getWorldRegion(String worldName) {
+		if (worldRegions.get(worldName) == null)
+			loadWorldRegion(worldName);
+
 		return worldRegions.get(worldName);
 	}
-	
+
 	/**
 	 * Adds a worldregion to the worldRegions map
 	 * 
 	 * @param region
 	 */
-	public void loadWorldRegion(WorldRegion region) {
-		worldRegions.put(region.getWorldName(), region);
+	public void loadWorldRegion(String worldName) {
+		File worldFile = new File(plugin.getDataFolder() + File.separator + worldName + File.separator + worldName + ".yml");
+		WorldRegion region = (WorldRegion) regionStore.loadRegion(worldFile);
+		if (region != null)
+			worldRegions.put(region.getWorldName(), region);
 	}
-	
+
 	/**
 	 * Load a World's Regions from Storage
 	 * 
@@ -69,10 +84,17 @@ public class UniverseRegionManager {
 	 * @return
 	 */
 	public void loadWorldRegions(String worldName) {
-		worldManagers.put(worldName, new WorldRegionManager());
-		regionStore.loadRegions(worldName);
+		WorldRegionManager worldManager = null;
+		if (worldManagers.containsKey(worldName))
+			worldManagers.get(worldName);
+		else {
+			worldManager = new WorldRegionManager();
+			worldManagers.put(worldName, worldManager);
+		}
+		Set<Region> regions = regionStore.loadRegions(worldName);
+		worldManager.addRegions(regions);
 	}
-	
+
 	/**
 	 * Clears the WorldRegion and WorldManagers mappings
 	 */
@@ -80,7 +102,7 @@ public class UniverseRegionManager {
 		worldManagers.clear();
 		worldRegions.clear();
 	}
-	
+
 	/**
 	 * Unload a specific World's Region & Manager
 	 * 
@@ -90,7 +112,7 @@ public class UniverseRegionManager {
 		worldManagers.remove(worldName);
 		worldRegions.remove(worldName);
 	}
-	
+
 	private void loadStorage(Regional plugin) {
 		if (plugin.getSettings().getStorageType().contains("yml")) {
 			regionStore = new YMLStorageHandler(plugin);
