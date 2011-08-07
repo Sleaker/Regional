@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sleaker.regional.Regional;
+import com.sleaker.regional.Settings;
 import com.sleaker.regional.persistence.StorageHandler;
 import com.sleaker.regional.persistence.YMLStorageHandler;
 import com.sleaker.regional.regions.Region;
@@ -67,14 +68,21 @@ public class UniverseRegionManager {
 
 	/**
 	 * Adds a worldregion to the worldRegions map
+	 * Returns whether the region existed and could be loaded. If not we should load in a default region for the world
 	 * 
 	 * @param region
+	 * @return true/false
 	 */
 	public void loadWorldRegion(String worldName) {
 		File worldFile = new File(plugin.getDataFolder() + File.separator + worldName + File.separator + worldName + ".yml");
 		WorldRegion region = (WorldRegion) regionStore.loadRegion(worldFile);
-		if (region != null)
-			worldRegions.put(region.getWorldName(), region);
+		if (region == null) {
+			region = new WorldRegion(Settings.getNextId(), worldName, null, plugin.getDescription().getName());
+			regionStore.saveRegion(region);
+		}
+		
+		worldRegions.put(region.getWorldName(), region);
+			
 	}
 
 	/**

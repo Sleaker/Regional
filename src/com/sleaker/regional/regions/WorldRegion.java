@@ -15,8 +15,15 @@ import com.herocraftonline.dthielke.lists.PrivilegedList;
  */
 public class WorldRegion extends Region {
 	
-	public WorldRegion(String name, short id, String worldName, PrivilegedList privs) {
+	public WorldRegion(String name, int id, String worldName, PrivilegedList privs, String pluginName) {
 		super(name, id, worldName, privs);
+		this.addNamespace(pluginName);
+		this.weight = -1;
+	}
+	
+	public WorldRegion(int id, String worldName, PrivilegedList privs, String pluginName) {
+		super(worldName, id, worldName, privs);
+		this.addNamespace(pluginName);
 		this.weight = -1;
 	}
 	

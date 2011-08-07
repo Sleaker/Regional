@@ -57,8 +57,12 @@ public class YMLStorageHandler implements StorageHandler {
 	public Region loadRegion(File regionFile) {
 		Configuration regionConfig = new Configuration(regionFile);
 		regionConfig.load();
+
+		//If the region configuration doesn't exist for this region exit immediately
+		if (regionConfig.getKeys().isEmpty())
+			return null;
+
 		String name = regionConfig.getString("name");
-		plugin.getSettings();
 		short id = (short) regionConfig.getInt("id", Settings.getNextId());
 		String worldName = regionConfig.getString("world");
 		String type = regionConfig.getString("type");
@@ -87,7 +91,8 @@ public class YMLStorageHandler implements StorageHandler {
 			region.addCubes(cubeList);
 			return region;
 		} else if (type.equals("world")) {
-			WorldRegion region = new WorldRegion(name, id, worldName, privs);
+			WorldRegion region = new WorldRegion(name, id, worldName, privs, plugin.getDescription().getName());
+			region.setWeight(weight);
 			loadFlags(region, regionConfig);
 			return region;
 		}
@@ -171,7 +176,8 @@ public class YMLStorageHandler implements StorageHandler {
 		regionConfig.setProperty("id", region.getId());
 		regionConfig.setProperty("parent", region.getParentId());
 		regionConfig.setProperty("namespaces", region.getNamespaces());
-		regionConfig.setProperty("priviliged-list", region.getPrivs().getName());
+		if (region.getPrivs() != null)
+			regionConfig.setProperty("priviliged-list", region.getPrivs().getName());
 		regionConfig.setProperty("world", region.getWorldName());
 		regionConfig.setProperty("type", region.getTypeName());
 		regionConfig.setProperty("weight", region.getWeight());

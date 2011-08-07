@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +38,7 @@ public abstract class Region implements Comparable<Region> {
 	 * What world this region is a part of
 	 */
 	final String worldName;
-	
+
 	/**
 	 * Associated Privilege Access list for this region
 	 */
@@ -52,11 +53,11 @@ public abstract class Region implements Comparable<Region> {
 	 * The weight that this region has. Higher weighted regions have presedence over lower weighted regions
 	 */
 	byte weight = 0;
-	
+
 	/**
 	 * Namespaces define which plugins are associated with this region
 	 */
-	private Set<String> namespaces;
+	private Set<String> namespaces = new HashSet<String>();
 
 	/**
 	 * EnumSet of standard flags that this region contains.
@@ -73,7 +74,7 @@ public abstract class Region implements Comparable<Region> {
 	//-------------------------//
 	//    Constructors
 	//-------------------------//
-	
+
 	Region(String name, int id, String worldName, PrivilegedList privs, Plugin plugin) {
 		this.name = name;
 		this.id = id;
@@ -86,7 +87,7 @@ public abstract class Region implements Comparable<Region> {
 	Region(String name, int id, String worldName, Plugin plugin) {
 		this(name, id, worldName, null, plugin);
 	}
-	
+
 	Region(String name, int id, String worldName, PrivilegedList privs, byte weight, List<String> namespaces, int parentId) {
 		this.name = name;
 		this.id = id;
@@ -96,7 +97,7 @@ public abstract class Region implements Comparable<Region> {
 		this.namespaces.addAll(namespaces);
 		this.parentId = parentId;
 	}
-	
+
 	Region(String name, int id, String worldName, PrivilegedList privs) {
 		this.name = name;
 		this.id = id;
@@ -128,7 +129,7 @@ public abstract class Region implements Comparable<Region> {
 	public String getWorldName() {
 		return worldName;
 	}
-	
+
 	//--------------------------//
 	//   Flag Methods
 	//--------------------------//
@@ -140,7 +141,7 @@ public abstract class Region implements Comparable<Region> {
 	public void addFlags(Collection<StateFlag> flags) {
 		standardFlags.addAll(flags);
 	}
-	
+
 	/**
 	 * Adds a custom flag of type T to the custom flag map
 	 * 
@@ -151,7 +152,7 @@ public abstract class Region implements Comparable<Region> {
 	public <T> void addFlag(Flag<T> flag, Object obj) {
 		customFlags.put(flag, obj);
 	}
-	
+
 	/**
 	 * Add a flag to the Region
 	 * Flags added to the set are active (true)
@@ -200,7 +201,7 @@ public abstract class Region implements Comparable<Region> {
 		}
 		return val;
 	}
-	
+
 	/**
 	 * Set a custom flag's value.
 	 * Setting a flag to a null value will instead remove that flag
@@ -217,7 +218,7 @@ public abstract class Region implements Comparable<Region> {
 			customFlags.put(flag, val);
 		}
 	}
-	
+
 	/**
 	 * Returns the customFlags map.
 	 * @return
@@ -234,7 +235,7 @@ public abstract class Region implements Comparable<Region> {
 	public Set<StateFlag> getFlags() {
 		return EnumSet.copyOf(standardFlags);
 	}
-	
+
 	/**
 	 * Gets the type of this region.
 	 * @return string type
@@ -251,12 +252,12 @@ public abstract class Region implements Comparable<Region> {
 		if (parentId == -1) {
 			this.parentId = -1;
 		} 
-		
+
 		int p = parentId;
 		while (p != -1) {
 			if (p == this.id)
 				throw new CircularInheritenceException();
-			
+
 			p = wrm.getRegion(p).getParentId();
 		}
 		this.parentId = parentId;
@@ -265,7 +266,7 @@ public abstract class Region implements Comparable<Region> {
 	public int getParentId() {
 		return parentId;
 	}
-	
+
 	//--------------------------//
 	//  Namespace Methods
 	//--------------------------//
@@ -285,7 +286,7 @@ public abstract class Region implements Comparable<Region> {
 	public byte getWeight() {
 		return weight;
 	}
-	
+
 	/**
 	 * Gets the namespaces associated with this Region
 	 * 
@@ -296,7 +297,7 @@ public abstract class Region implements Comparable<Region> {
 		namespaces.addAll(this.namespaces);
 		return namespaces;
 	}
-	
+
 	/**
 	 * Tests if this region is in the specified namespace 
 	 * 
@@ -313,8 +314,8 @@ public abstract class Region implements Comparable<Region> {
 	 * @param plugin
 	 * @return
 	 */
-	public boolean addNamespace(Plugin plugin) {
-		return this.namespaces.add(plugin.getDescription().getName());
+	public void addNamespace(String pluginName) {
+		this.namespaces.add(pluginName);
 	}
 
 	/**
@@ -367,7 +368,7 @@ public abstract class Region implements Comparable<Region> {
 	 * @return true/false
 	 */
 	public abstract boolean containsCube(Cube cube);
-	
+
 	/**
 	 * Tests if the Location is somewhere within this region
 	 * 
@@ -411,7 +412,7 @@ public abstract class Region implements Comparable<Region> {
 	public int hashCode() {
 		return this.id;
 	}
-	
+
 	public static class CircularInheritenceException extends Exception {
 		private static final long serialVersionUID = -3626449351263374520L;
 	}

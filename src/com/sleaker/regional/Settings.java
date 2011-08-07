@@ -35,12 +35,14 @@ public class Settings {
 	}
 	
 	public static int getNextId() {
+		//TODO: Fix Next ID - right now it's returning every other number
 		if (nextId < 1)
 			nextId = config.getInt(Setting.REGIONID.node, (Integer) Setting.REGIONID.defaultVal);
 		else 
 			nextId++;
 		
-		config.setProperty(Setting.REGIONID.node, nextId + 1);
+		config.setProperty(Setting.REGIONID.node, nextId);
+		config.save();
 		return nextId;
 	}
 }
