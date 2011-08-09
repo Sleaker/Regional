@@ -1,6 +1,5 @@
 package com.sleaker.regional.persistence;
 
-import java.io.File;
 import java.util.Set;
 
 import com.sleaker.regional.regions.Region;
@@ -16,12 +15,12 @@ public interface StorageHandler {
 	public Set<Region> loadRegions(String worldName);
 	
 	/**
-	 * Load the Region from the specified filename
+	 * Load the specific region
 	 * 
 	 * @param fileName
 	 * @return the Region loaded
 	 */
-	public Region loadRegion(File regionFile);
+	public Region loadRegion(String worldName, String region);
 	
 	/**
 	 * Save one Region to storage

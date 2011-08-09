@@ -17,7 +17,7 @@ import com.sleaker.regional.managers.UniverseRegionManager;
 
 public class Regional extends JavaPlugin {
 
-	private String plugName;
+	public static String plugName;
 	private Logger log = Logger.getLogger("Minecraft");
 	private UniverseRegionManager uManager;
 	private Lists lists = null;
@@ -52,6 +52,7 @@ public class Regional extends JavaPlugin {
 		//Load in regions for worlds that are loaded
 		for (World world : this.getServer().getWorlds()) {
 			if (uManager.getWorldRegionManager(world.getName()) == null) {
+				log.info(plugName + " - Loading world Regions for " + world.getName());
 				uManager.loadWorldRegion(world.getName());
 				uManager.loadWorldRegions(world.getName());
 			}

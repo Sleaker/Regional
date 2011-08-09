@@ -1,6 +1,5 @@
 package com.sleaker.regional.managers;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -74,8 +73,7 @@ public class UniverseRegionManager {
 	 * @return true/false
 	 */
 	public void loadWorldRegion(String worldName) {
-		File worldFile = new File(plugin.getDataFolder() + File.separator + worldName + File.separator + worldName + ".yml");
-		WorldRegion region = (WorldRegion) regionStore.loadRegion(worldFile);
+		WorldRegion region = (WorldRegion) regionStore.loadRegion(worldName, worldName);
 		if (region == null) {
 			region = new WorldRegion(Settings.getNextId(), worldName, null, plugin.getDescription().getName());
 			regionStore.saveRegion(region);

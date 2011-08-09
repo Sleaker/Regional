@@ -14,7 +14,6 @@ import org.bukkit.util.config.Configuration;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
 import com.sleaker.regional.Regional;
-import com.sleaker.regional.Settings;
 import com.sleaker.regional.flags.BooleanFlag;
 import com.sleaker.regional.flags.DoubleFlag;
 import com.sleaker.regional.flags.Flag;
@@ -53,8 +52,12 @@ public class YMLStorageHandler implements StorageHandler {
 		return regions;
 	}
 
-	@Override
-	public Region loadRegion(File regionFile) {
+	public Region loadRegion(String worldName, String region) {
+		File regionFile = new File(plugin.getDataFolder() + File.separator + worldName + File.separator + region + ".yml");
+		return loadRegion(regionFile);	
+	}
+	
+	private Region loadRegion(File regionFile) {
 		Configuration regionConfig = new Configuration(regionFile);
 		regionConfig.load();
 
@@ -63,7 +66,7 @@ public class YMLStorageHandler implements StorageHandler {
 			return null;
 
 		String name = regionConfig.getString("name");
-		short id = (short) regionConfig.getInt("id", Settings.getNextId());
+		short id = (short) regionConfig.getInt("id", -1);
 		String worldName = regionConfig.getString("world");
 		String type = regionConfig.getString("type");
 		short parent = (short) regionConfig.getInt("parent", -1);
@@ -71,6 +74,9 @@ public class YMLStorageHandler implements StorageHandler {
 		PrivilegedList privs = plugin.getLists().getList(regionConfig.getString("priviliged-list"));
 		byte weight = (byte) regionConfig.getInt("weight", 0);
 
+		if (id == -1)
+			return null;
+		
 		if (type.equals("cube") || type.equals("chunk")) {
 			CubeRegion region;
 			if (type.equals("cube"))
@@ -159,7 +165,12 @@ public class YMLStorageHandler implements StorageHandler {
 	@Override
 	public boolean saveRegion(Region region) {
 		String regionDir = plugin.getDataFolder() + File.separator + region.getWorldName() + File.separator;
-		File regionFile = new File(regionDir + region.getId() + ".yml");
+		File regionFile = null;
+		if (region instanceof WorldRegion)
+			regionFile = new File(regionDir + region.getWorldName() + ".yml");
+		else 
+			regionFile = new File(regionDir + region.getId() + ".yml");
+		
 		Configuration regionConfig;
 		//Make our Directories and Files
 		try {

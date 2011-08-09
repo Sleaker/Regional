@@ -1,11 +1,13 @@
 package com.sleaker.regional;
 
+import java.util.logging.Logger;
+
 import org.bukkit.util.config.Configuration;
 
 public class Settings {
 
 	private static Configuration config;
-	private static int nextId = 0;
+	private static Logger log = Logger.getLogger("Minecraft");
 	
 	public Settings(Regional plugin) {
 		if (!plugin.getDataFolder().exists()) {
@@ -35,14 +37,10 @@ public class Settings {
 	}
 	
 	public static int getNextId() {
-		//TODO: Fix Next ID - right now it's returning every other number
-		if (nextId < 1)
-			nextId = config.getInt(Setting.REGIONID.node, (Integer) Setting.REGIONID.defaultVal);
-		else 
-			nextId++;
-		
-		config.setProperty(Setting.REGIONID.node, nextId);
+		int id = config.getInt(Setting.REGIONID.node, (Integer) Setting.REGIONID.defaultVal);
+		config.setProperty(Setting.REGIONID.node, id + 1);
 		config.save();
-		return nextId;
+		log.info(Regional.plugName + " - ID: " + id);
+		return id;
 	}
 }
