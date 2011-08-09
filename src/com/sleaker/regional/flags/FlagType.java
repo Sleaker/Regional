@@ -4,7 +4,8 @@ public enum FlagType {
 	BOOLEAN("boolean"),
 	DOUBLE("double"),
 	INTEGER("integer"),
-	STRING("string");
+	STRING("string"),
+	STATE("state");
 	
 	private final String name;
 	

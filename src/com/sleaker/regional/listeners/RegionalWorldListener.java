@@ -26,7 +26,6 @@ public class RegionalWorldListener extends WorldListener {
 		String worldName = event.getWorld().getName();
 		if (uManager.getWorldRegionManager(worldName) == null) {
 			log.info(Regional.plugName + " - Loading world Regions for " + worldName);
-			uManager.loadWorldRegion(worldName);
 			uManager.loadWorldRegions(worldName);
 		}
 	}

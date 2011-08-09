@@ -53,7 +53,6 @@ public class Regional extends JavaPlugin {
 		for (World world : this.getServer().getWorlds()) {
 			if (uManager.getWorldRegionManager(world.getName()) == null) {
 				log.info(plugName + " - Loading world Regions for " + world.getName());
-				uManager.loadWorldRegion(world.getName());
 				uManager.loadWorldRegions(world.getName());
 			}
 		}
@@ -64,8 +63,8 @@ public class Regional extends JavaPlugin {
 		
 		//Block Events
 		bListener = new RegionalBlockListener();
-		//pm.registerEvent(Event.Type.BLOCK_BREAK, bListener, Priority.High, this);
-		//pm.registerEvent(Event.Type.BLOCK_DAMAGE, bListener, Priority.High, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, bListener, Priority.High, this);
+		pm.registerEvent(Event.Type.BLOCK_DAMAGE, bListener, Priority.High, this);
 		
 		
 		//If the settings are set to monitor on-move then lets go ahead and enable it

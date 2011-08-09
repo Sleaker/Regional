@@ -6,9 +6,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.sleaker.regional.flags.ResolvedFlags;
 import com.sleaker.regional.regions.Cube;
 import com.sleaker.regional.regions.CubeRegion;
 import com.sleaker.regional.regions.Region;
+import com.sleaker.regional.regions.WorldRegion;
 
 /**
  * Represents the RegionManager for a specific world
@@ -17,15 +19,39 @@ import com.sleaker.regional.regions.Region;
  */
 public class WorldRegionManager {
 
+	/**
+	 * Map of all regionIds to their respective Regions
+	 */
 	private Map<Integer, CubeRegion> regionMap;
 
+	/**
+	 * Map of all cubes to the regions they contain
+	 */
 	private Map<Cube, Set<CubeRegion>> areaMap;
+	
+	/**
+	 * Stores this worlds main region
+	 */
+	private WorldRegion worldRegion;
 
-	public WorldRegionManager() {
+	public WorldRegionManager(WorldRegion worldRegion) {
 		regionMap = new HashMap<Integer, CubeRegion>();
 		areaMap = new HashMap<Cube, Set<CubeRegion>>();
+		this.worldRegion = worldRegion;
 	}
 
+	public ResolvedFlags resolveFlags(Cube cube) {
+		//TODO: Finish Flag resolution logic
+		//Remove any parents from the set.
+		for (CubeRegion cRegion : areaMap.get(cube)) {
+			if (cRegion.getParentId() > -1) {
+				
+			}
+				
+		}
+		return null;
+	}
+	
 	/**
 	 * Gets the region from id
 	 * 

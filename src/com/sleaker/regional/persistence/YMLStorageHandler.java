@@ -17,8 +17,8 @@ import com.sleaker.regional.Regional;
 import com.sleaker.regional.flags.BooleanFlag;
 import com.sleaker.regional.flags.DoubleFlag;
 import com.sleaker.regional.flags.Flag;
+import com.sleaker.regional.flags.FlagType;
 import com.sleaker.regional.flags.IntegerFlag;
-import com.sleaker.regional.flags.StateFlag;
 import com.sleaker.regional.flags.StringFlag;
 import com.sleaker.regional.regions.ChunkRegion;
 import com.sleaker.regional.regions.Cube;
@@ -108,8 +108,14 @@ public class YMLStorageHandler implements StorageHandler {
 
 	private void loadFlags(Region region, Configuration regionConfig) {
 		//Load the state flags
-		for (int flagId : regionConfig.getIntList("flags.state", new ArrayList<Integer>())) {
-			region.addFlag(StateFlag.getFlag(flagId));
+		if (regionConfig.getNodes("flags.state") != null) {
+			Iterator<String> iter = regionConfig.getNodes("flags.state").keySet().iterator();
+			while (iter.hasNext()) {
+				String nodeName = iter.next();
+				BooleanFlag flag = new BooleanFlag(nodeName, FlagType.STATE);
+				boolean val = Boolean.parseBoolean(regionConfig.getString("flags.state." + nodeName));
+				region.addFlag(flag, val);
+			}
 		}
 
 		//Load boolean flags
@@ -202,19 +208,12 @@ public class YMLStorageHandler implements StorageHandler {
 			regionConfig.setProperty("cubes", cubeStrings); 
 		}
 
-		//Dump all custom flags
-		Iterator<Flag<?>> iter = region.getCustomFlags().keySet().iterator();
+		//Dump all flags
+		Iterator<Flag<?>> iter = region.getFlags().keySet().iterator();
 		while(iter.hasNext()) {
 			Flag<?> flag = iter.next();
-			regionConfig.setProperty("flags." + flag.getTypeName() + "." + flag.getName(), flag.objectToType(region.getCustomFlag(flag)));
+			regionConfig.setProperty("flags." + flag.getTypeName() + "." + flag.getName(), flag.objectToType(region.getFlag(flag)));
 		}
-
-		//Dump all state flags
-		List<Integer> flagList = new ArrayList<Integer>();
-		for (StateFlag flag : region.getFlags()) {
-			flagList.add(flag.getId());
-		}
-		regionConfig.setProperty("flags.state", flagList);
 
 		regionConfig.save();
 		return true;

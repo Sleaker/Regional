@@ -2,7 +2,6 @@ package com.sleaker.regional.regions;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,8 +12,10 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.dthielke.lists.PrivilegedList;
+import com.sleaker.regional.flags.BooleanFlag;
 import com.sleaker.regional.flags.Flag;
 import com.sleaker.regional.flags.StateFlag;
+import com.sleaker.regional.managers.UniverseRegionManager;
 import com.sleaker.regional.managers.WorldRegionManager;
 
 /**
@@ -60,15 +61,9 @@ public abstract class Region implements Comparable<Region> {
 	private Set<String> namespaces = new HashSet<String>();
 
 	/**
-	 * EnumSet of standard flags that this region contains.
-	 * Any flags in the Set are Enabled
+	 * HashMap of flags for this region
 	 */
-	private Set<StateFlag> standardFlags = EnumSet.noneOf(StateFlag.class);
-
-	/**
-	 * HashMap of custom flags for this region
-	 */
-	private Map<Flag<?>, Object> customFlags = new HashMap<Flag<?>, Object>();
+	private Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>();
 
 
 	//-------------------------//
@@ -135,55 +130,35 @@ public abstract class Region implements Comparable<Region> {
 	//--------------------------//
 
 	/**
-	 * Adds all flags from another collection
-	 * 
+	 * Add a specific stateflag to the flag map
 	 */
-	public void addFlags(Collection<StateFlag> flags) {
-		standardFlags.addAll(flags);
+	public void addFlag(StateFlag flag, boolean val) {
+		addFlag(new BooleanFlag(flag), val);
 	}
-
+	
 	/**
-	 * Adds a custom flag of type T to the custom flag map
+	 * Adds a flag of type T to the flag map
 	 * 
 	 * @param <T>
 	 * @param flag
 	 * @param obj
 	 */
 	public <T> void addFlag(Flag<T> flag, Object obj) {
-		customFlags.put(flag, obj);
-	}
-
-	/**
-	 * Add a flag to the Region
-	 * Flags added to the set are active (true)
-	 * 
-	 */
-	public void addFlag(StateFlag flag) {
-		standardFlags.add(flag);
+		flags.put(flag, obj);
 	}
 
 	/**
 	 * Remove a flag from the set
-	 * Flags not contained in the set are 'inactive' (false)
-	 * 
-	 * @param flag
-	 */
-	public void removeFlag(StateFlag flag) {
-		standardFlags.remove(flag);
-	}
-
-	/**
-	 * Remove a custom flag from the set
 	 * @param <T>
 	 * 
 	 * @param name
 	 */
 	public <T> void removeFlag(Flag<T> flag) {
-		customFlags.remove(flag.getName());
+		flags.remove(flag.getName());
 	}
 
 	/**
-	 * Returns the value for this custom flag
+	 * Returns the value for this flag
 	 * 
 	 * @param <T>
 	 * @param <V>
@@ -191,8 +166,8 @@ public abstract class Region implements Comparable<Region> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Flag<V>, V> V getCustomFlag(T flag) {
-		Object obj = customFlags.get(flag);
+	public <T extends Flag<V>, V> V getFlag(T flag) {
+		Object obj = flags.get(flag);
 		V val;
 		if (obj != null) {
 			val = (V) obj;
@@ -203,7 +178,7 @@ public abstract class Region implements Comparable<Region> {
 	}
 
 	/**
-	 * Set a custom flag's value.
+	 * Set a flag's value.
 	 * Setting a flag to a null value will instead remove that flag
 	 * 
 	 * @param <T>
@@ -213,27 +188,36 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	public <T extends Flag<V>, V> void setFlag(T flag, V val) {
 		if (val == null) {
-			customFlags.remove(flag);
+			flags.remove(flag);
 		} else {
-			customFlags.put(flag, val);
+			flags.put(flag, val);
 		}
 	}
 
 	/**
-	 * Returns the customFlags map.
-	 * @return
-	 */
-	public Map<Flag<?>, Object> getCustomFlags() {
-		return customFlags;
-	}
-
-	/**
-	 * Returns a snapshop Set of all active flags on this region
+	 * Returns a snapshot Mapping of the flags for this region
 	 * 
 	 * @return
 	 */
-	public Set<StateFlag> getFlags() {
-		return EnumSet.copyOf(standardFlags);
+	public Map<Flag<?>, Object> getFlags() {
+		return new HashMap<Flag<?>, Object>(flags);
+	}
+	
+	/**
+	 * Returns a snapshot set of all active flags on this region - including inheritence
+	 * 
+	 * @param uManager
+	 * @return
+	 */
+	public Map<Flag<?>, Object> getInheritedFlags(UniverseRegionManager uManager) {
+		if (this.parentId > -1) {
+			Map<Flag<?>, Object> resolvedFlags = new HashMap<Flag<?>, Object>();
+			//Dumping all parent flags into the map first allows child flags to overwrite parent flags
+			resolvedFlags.putAll(uManager.getRegion(this.worldName, this.parentId).getInheritedFlags(uManager));
+			resolvedFlags.putAll(flags);
+			return resolvedFlags;
+		}
+		return flags;
 	}
 
 	/**

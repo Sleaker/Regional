@@ -1,5 +1,8 @@
 package com.sleaker.regional.flags;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Defines the standard flags that a region can have
  * 
@@ -38,6 +41,7 @@ public enum StateFlag {
     private final String name;
     private final int id;
     private static final StateFlag[] lookupId;
+    private static Map<String, StateFlag> nameMap = new HashMap<String, StateFlag>();
     
     StateFlag(int id, String name) {
     	this.id = id;
@@ -84,6 +88,16 @@ public enum StateFlag {
     }
     
     /**
+     * Gets the Stateflag associated with the name
+     * 
+     * @param name
+     * @return
+     */
+    public static StateFlag getFlag(String name) {
+    	return nameMap.get(name);
+    }
+    
+    /**
      * Gets the Flag associated with the 
      * 
      * @param id
@@ -95,5 +109,9 @@ public enum StateFlag {
     
     static {
     	lookupId = StateFlag.values();
+    	
+    	for (StateFlag flag : values()) {
+    		nameMap.put(flag.getName(), flag);
+    	}
     }
 }

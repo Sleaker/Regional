@@ -43,6 +43,25 @@ public class UniverseRegionManager {
 	}
 
 	/**
+	 * Gets a region from the specified world with the given Id
+	 * 
+	 * @param worldName
+	 * @param id
+	 * @return
+	 */
+	public Region getRegion(String worldName, int id) {
+		//If we have a null region we should try to load them first
+		if (worldRegions.get(worldName) == null) {
+			loadWorldRegions(worldName);
+		}
+		
+		if (worldRegions.get(worldName).getId() == id)
+			return worldRegions.get(worldName);
+
+		return worldManagers.get(worldName).getRegion(id);
+	}
+	
+	/**
 	 * Get a worlds region manager
 	 * 
 	 * @param worldName
@@ -53,7 +72,7 @@ public class UniverseRegionManager {
 	}
 
 	/**
-	 * Get a worlds Region
+	 * Get a Worlds Global Region
 	 * 
 	 * @param worldName
 	 * @return
@@ -66,11 +85,9 @@ public class UniverseRegionManager {
 	}
 
 	/**
-	 * Adds a worldregion to the worldRegions map
-	 * Returns whether the region existed and could be loaded. If not we should load in a default region for the world
+	 * Loads a Global worldregion to the worldRegions map - if it does not exist - then it creates the worldregion
 	 * 
 	 * @param region
-	 * @return true/false
 	 */
 	public void loadWorldRegion(String worldName) {
 		WorldRegion region = (WorldRegion) regionStore.loadRegion(worldName, worldName);
@@ -78,9 +95,7 @@ public class UniverseRegionManager {
 			region = new WorldRegion(Settings.getNextId(), worldName, null, plugin.getDescription().getName());
 			regionStore.saveRegion(region);
 		}
-		
 		worldRegions.put(region.getWorldName(), region);
-			
 	}
 
 	/**
@@ -90,11 +105,13 @@ public class UniverseRegionManager {
 	 * @return
 	 */
 	public void loadWorldRegions(String worldName) {
+		//Load the specific world region first
+		loadWorldRegion(worldName);
 		WorldRegionManager worldManager = null;
 		if (worldManagers.containsKey(worldName))
-			worldManagers.get(worldName);
+			worldManager = worldManagers.get(worldName);
 		else {
-			worldManager = new WorldRegionManager();
+			worldManager = new WorldRegionManager(worldRegions.get(worldName));
 			worldManagers.put(worldName, worldManager);
 		}
 		Set<Region> regions = regionStore.loadRegions(worldName);
