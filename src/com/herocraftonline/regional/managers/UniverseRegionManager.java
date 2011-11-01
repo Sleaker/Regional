@@ -24,11 +24,6 @@ public class UniverseRegionManager {
 	private Map<String, WorldRegionManager> worldManagers;
 
 	/**
-	 * Set of all World-Specific Regions
-	 */
-	private Map<String, WorldRegion> worldRegions;
-
-	/**
 	 * Instance of the storage handler currently in use
 	 */
 	private StorageHandler regionStore;
@@ -38,7 +33,6 @@ public class UniverseRegionManager {
 	public UniverseRegionManager(Regional plugin) {
 		this.plugin = plugin;
 		worldManagers = new HashMap<String, WorldRegionManager>();
-		worldRegions = new HashMap<String, WorldRegion>();
 		loadStorage(plugin);
 	}
 
@@ -50,14 +44,6 @@ public class UniverseRegionManager {
 	 * @return
 	 */
 	public Region getRegion(String worldName, int id) {
-		//If we have a null region we should try to load them first
-		if (worldRegions.get(worldName) == null) {
-			loadWorldRegions(worldName);
-		}
-		
-		if (worldRegions.get(worldName).getId() == id)
-			return worldRegions.get(worldName);
-
 		return worldManagers.get(worldName).getRegion(id);
 	}
 	
@@ -72,33 +58,6 @@ public class UniverseRegionManager {
 	}
 
 	/**
-	 * Get a Worlds Global Region
-	 * 
-	 * @param worldName
-	 * @return
-	 */
-	public WorldRegion getWorldRegion(String worldName) {
-		if (worldRegions.get(worldName) == null)
-			loadWorldRegion(worldName);
-
-		return worldRegions.get(worldName);
-	}
-
-	/**
-	 * Loads a Global worldregion to the worldRegions map - if it does not exist - then it creates the worldregion
-	 * 
-	 * @param region
-	 */
-	public void loadWorldRegion(String worldName) {
-		WorldRegion region = (WorldRegion) regionStore.loadRegion(worldName, worldName);
-		if (region == null) {
-			region = new WorldRegion(Settings.getNextId(), worldName, plugin.getDescription().getName());
-			regionStore.saveRegion(region);
-		}
-		worldRegions.put(region.getWorldName(), region);
-	}
-
-	/**
 	 * Load a World's Regions from Storage
 	 * 
 	 * @param worldName
@@ -106,12 +65,11 @@ public class UniverseRegionManager {
 	 */
 	public void loadWorldRegions(String worldName) {
 		//Load the specific world region first
-		loadWorldRegion(worldName);
 		WorldRegionManager worldManager = null;
 		if (worldManagers.containsKey(worldName))
 			worldManager = worldManagers.get(worldName);
 		else {
-			worldManager = new WorldRegionManager(this, worldRegions.get(worldName));
+			worldManager = new WorldRegionManager(this);
 			worldManagers.put(worldName, worldManager);
 		}
 		Set<Region> regions = regionStore.loadRegions(worldName);
@@ -123,7 +81,6 @@ public class UniverseRegionManager {
 	 */
 	public void unloadAll() {
 		worldManagers.clear();
-		worldRegions.clear();
 	}
 
 	/**
@@ -133,7 +90,6 @@ public class UniverseRegionManager {
 	 */
 	public void unload(String worldName) {
 		worldManagers.remove(worldName);
-		worldRegions.remove(worldName);
 	}
 
 	/**

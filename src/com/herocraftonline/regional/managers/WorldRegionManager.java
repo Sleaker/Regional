@@ -37,21 +37,15 @@ public class WorldRegionManager {
 	 * Map of cached resolved flags, used so cube flag resolution can be cached to increase performance 
 	 */
 	private Map<Cube, ResolvedFlags> flagCache = new LinkedHashMap<Cube, ResolvedFlags>();
-	
-	/**
-	 * The WorldRegion for this World
-	 */
-	private final WorldRegion worldRegion;
-	
+
 	private final UniverseRegionManager uManager;
-	
-	public WorldRegionManager(UniverseRegionManager uManager, WorldRegion worldRegion) {
+
+	public WorldRegionManager(UniverseRegionManager uManager) {
 		regionMap = new HashMap<Integer, CubeRegion>();
 		areaMap = new HashMap<Cube, List<CubeRegion>>();
-		this.worldRegion = worldRegion;
 		this.uManager = uManager;
 	}
-	
+
 	/**
 	 * Gets the region from id
 	 * 
@@ -70,7 +64,7 @@ public class WorldRegionManager {
 	public Collection<CubeRegion> getRegions() {
 		return regionMap.values();
 	}
-	
+
 	/**
 	 * Adds all regions from the collection to the region maps
 	 * 
@@ -81,7 +75,7 @@ public class WorldRegionManager {
 			if (region instanceof CubeRegion)
 				addRegion((CubeRegion) region);
 	}
-	
+
 	/**
 	 * adds the specific region to the regionMap and areaMap
 	 * 
@@ -103,7 +97,7 @@ public class WorldRegionManager {
 		else
 			return false;
 	}
-	
+
 	/**
 	 * Gets the resolved flags at a given cube
 	 * 
@@ -113,11 +107,7 @@ public class WorldRegionManager {
 	public ResolvedFlags getResolvedFlags(Cube cube) {
 		if (flagCache.containsKey(cube))
 			return flagCache.get(cube);
-		
-		if (areaMap.get(cube) == null || areaMap.get(cube).isEmpty()) {
-			return new ResolvedFlags(worldRegion.getFlags());
-		}
-		
+
 		ResolvedFlags resolvedFlags = null;
 		Set<Region> regions = new HashSet<Region>(areaMap.get(cube));
 		for (Region region : areaMap.get(cube)) {
@@ -133,7 +123,7 @@ public class WorldRegionManager {
 			}
 			resolved.keySet().retainAll(region.getInheritedFlags(uManager).keySet());
 		}
-		
+
 		return resolvedFlags;
 	}
 }

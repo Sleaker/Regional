@@ -170,10 +170,7 @@ public class YMLStorageHandler implements StorageHandler {
 	public boolean saveRegion(Region region) {
 		String regionDir = plugin.getDataFolder() + File.separator + region.getWorldName() + File.separator;
 		File regionFile = null;
-		if (region instanceof WorldRegion)
-			regionFile = new File(regionDir + region.getWorldName() + ".yml");
-		else 
-			regionFile = new File(regionDir + region.getId() + ".yml");
+		regionFile = new File(regionDir + region.getId() + ".yml");
 		
 		Configuration regionConfig;
 		//Make our Directories and Files
