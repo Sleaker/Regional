@@ -15,7 +15,7 @@ import org.bukkit.plugin.Plugin;
 import com.herocraftonline.regional.flags.BooleanFlag;
 import com.herocraftonline.regional.flags.BuiltinFlag;
 import com.herocraftonline.regional.flags.Flag;
-import com.herocraftonline.regional.flags.ResolvedFlags;
+import com.herocraftonline.regional.flags.RegionFlagSet;
 import com.herocraftonline.regional.managers.UniverseRegionManager;
 import com.herocraftonline.regional.managers.WorldRegionManager;
 
@@ -74,7 +74,7 @@ public abstract class Region {
 	/**
 	 * This regions resolved flags - should update whenever a flag is changed on a parent region, or on this region
 	 */
-	private ResolvedFlags resolvedFlags;
+	private RegionFlagSet resolvedFlags;
 	
 	//-------------------------//
 	//    Constructors

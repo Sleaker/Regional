@@ -3,14 +3,9 @@ package com.herocraftonline.regional.managers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import com.herocraftonline.regional.flags.Flag;
-import com.herocraftonline.regional.flags.ResolvedFlags;
 import com.herocraftonline.regional.regions.Cube;
 import com.herocraftonline.regional.regions.CubeRegion;
 import com.herocraftonline.regional.regions.Region;
@@ -32,11 +27,11 @@ public class WorldRegionManager {
 	 * Map of all cubes to the regions they contain
 	 */
 	private Map<Cube, List<CubeRegion>> areaMap;
-
+	
 	/**
-	 * Map of cached resolved flags, used so cube flag resolution can be cached to increase performance 
+	 * Holds the world-specific Region
 	 */
-	private Map<Cube, ResolvedFlags> flagCache = new LinkedHashMap<Cube, ResolvedFlags>();
+	private WorldRegion wRegion = null;
 
 	private final UniverseRegionManager uManager;
 
@@ -74,6 +69,8 @@ public class WorldRegionManager {
 		for (Region region : regions) 
 			if (region instanceof CubeRegion)
 				addRegion((CubeRegion) region);
+			else if (region instanceof WorldRegion && wRegion == null)
+				this.wRegion = (WorldRegion) region;
 	}
 
 	/**
@@ -96,34 +93,5 @@ public class WorldRegionManager {
 		}
 		else
 			return false;
-	}
-
-	/**
-	 * Gets the resolved flags at a given cube
-	 * 
-	 * @param cube
-	 * @return
-	 */
-	public ResolvedFlags getResolvedFlags(Cube cube) {
-		if (flagCache.containsKey(cube))
-			return flagCache.get(cube);
-
-		ResolvedFlags resolvedFlags = null;
-		Set<Region> regions = new HashSet<Region>(areaMap.get(cube));
-		for (Region region : areaMap.get(cube)) {
-			Region parent = regionMap.get(region.getParentId());
-			if (parent != null)
-				regions.remove(parent);
-		}
-		Map<Flag<?>, Object> resolved = new HashMap<Flag<?>, Object>();
-		for (Region region : regions) {
-			if (resolved.isEmpty()) {
-				resolved.putAll(region.getInheritedFlags(uManager));
-				continue;
-			}
-			resolved.keySet().retainAll(region.getInheritedFlags(uManager).keySet());
-		}
-
-		return resolvedFlags;
 	}
 }
