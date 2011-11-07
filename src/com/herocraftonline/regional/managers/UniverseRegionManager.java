@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.herocraftonline.regional.Regional;
+import com.herocraftonline.regional.Settings;
 import com.herocraftonline.regional.persistence.StorageHandler;
 import com.herocraftonline.regional.persistence.YMLStorageHandler;
 import com.herocraftonline.regional.regions.Region;
@@ -41,7 +42,7 @@ public class UniverseRegionManager {
 	public Region getRegion(String worldName, int id) {
 		return worldManagers.get(worldName).getRegion(id);
 	}
-	
+
 	/**
 	 * Get a worlds region manager
 	 * 
@@ -93,9 +94,9 @@ public class UniverseRegionManager {
 	 * @param plugin
 	 */
 	private void loadStorage(Regional plugin) {
-		if (plugin.getSettings().getStorageType().contains("yml")) {
+		if (Settings.getStorageType().contains("yml")) {
 			regionStore = new YMLStorageHandler(plugin);
-		} else if (plugin.getSettings().getStorageType().contains("sql")) {
+		} else if (Settings.getStorageType().contains("sql")) {
 			return;
 		}
 	}

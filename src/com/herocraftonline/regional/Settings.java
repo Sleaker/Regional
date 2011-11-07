@@ -2,33 +2,22 @@ package com.herocraftonline.regional;
 
 import java.util.logging.Logger;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class Settings {
 
-	private static Configuration config;
 	private static Logger log = Logger.getLogger("Minecraft");
+	private static FileConfiguration config;
+	private static Regional plugin;
 	
-	public Settings(Regional plugin) {
-		if (!plugin.getDataFolder().exists()) {
-			plugin.getDataFolder().mkdirs();
-			
-		}
-		
-		config = plugin.getConfiguration();
-		if (config.getKeys().isEmpty()) {
-			loadDefaults();
-		}
-	}
-	
-	private void loadDefaults() {
-		for (Setting setting : Setting.values())
-			config.setProperty(setting.node, setting.defaultVal);
-		
-		config.save();
+	protected Settings(Regional plugin) {
+		Settings.plugin = plugin;
+		config = plugin.getConfig();
+		config.options().copyDefaults(true);
+		save();
 	}
 
-	public String getStorageType() {
+	public static String getStorageType() {
 		return config.getString(Setting.STORAGE.node, (String) Setting.STORAGE.defaultVal);
 	}
 	
@@ -38,9 +27,14 @@ public class Settings {
 	
 	public static int getNextId() {
 		int id = config.getInt(Setting.REGIONID.node, (Integer) Setting.REGIONID.defaultVal);
-		config.setProperty(Setting.REGIONID.node, id + 1);
-		config.save();
+		config.set(Setting.REGIONID.node, id + 1);
 		log.info(Regional.plugName + " - ID: " + id);
+		save();
 		return id;
 	}
+	
+	public static void save() {
+		plugin.saveConfig();
+	}
+	
 }

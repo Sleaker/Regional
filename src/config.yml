@@ -1,0 +1,10 @@
+storage:
+  type: yml
+  mysql:
+    login: minecraft
+    pass: password
+    url: jdbc:mysql://localhost:3306/regions
+on-move-chest: false
+region:
+  next-id: 1
+    
