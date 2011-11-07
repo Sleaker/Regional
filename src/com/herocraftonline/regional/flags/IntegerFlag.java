@@ -1,5 +1,10 @@
 package com.herocraftonline.regional.flags;
 
+/**
+ * Represents a flag that holds an integer value
+ * @author sleak
+ *
+ */
 public class IntegerFlag extends Flag<Integer> {
 
     public IntegerFlag(String name) {

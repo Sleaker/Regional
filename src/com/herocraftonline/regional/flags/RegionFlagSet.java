@@ -10,6 +10,12 @@ import com.herocraftonline.regional.regions.CubeRegion;
 import com.herocraftonline.regional.regions.Region;
 import com.herocraftonline.regional.regions.WorldRegion;
 
+/**
+ * Holds the data for resolving the flags currently at work on a region - this is used for 
+ * determining a flag-value at any given point in-game
+ * @author sleak
+ *
+ */
 public class RegionFlagSet implements Iterable<Region> {
 
 	final List<Region> regions;

@@ -7,14 +7,20 @@ package com.herocraftonline.regional.flags;
 public abstract class Flag<T> {
 
 	private final String name;
-
 	private final FlagType type;
 	
+	/**
+	 * Constructs a new Flag with the given name and type
+	 * 
+	 * @param name
+	 * @param type
+	 */
 	public Flag(String name, FlagType type) {
 		this.name = name;
 		this.type = type;
 	}
 	
+	@Override
 	public int hashCode() {
 		return name.hashCode();
 	}
@@ -22,7 +28,7 @@ public abstract class Flag<T> {
 	/**
 	 * Gets the flags name
 	 * 
-	 * @return
+	 * @return name of the flag
 	 */
 	public String getName() {
 		return this.name;
@@ -40,13 +46,13 @@ public abstract class Flag<T> {
 	/**
 	 * Get the name of this flag type
 	 * 
-	 * @return
+	 * @return the type-name of this flag
 	 */
 	public String getTypeName() {
 		return this.type.getName();
 	}
 
-	
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -58,9 +64,8 @@ public abstract class Flag<T> {
 	}
 	/**
 	 * Returns a Type casted variable of object o
-	 * 
 	 * @param o
-	 * @return
+	 * @return Returns the type-casted variable of o
 	 */
 	public abstract T objectToType(Object o);
 

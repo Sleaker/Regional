@@ -2,6 +2,12 @@ package com.herocraftonline.regional.flags;
 
 import java.util.HashMap;
 
+/**
+ * Data storage for all default values of flags
+ * This is a singleton
+ * @author sleak
+ *
+ */
 public class DefaultFlags extends HashMap<Flag<?>, Object>{
 	
 	private static final long serialVersionUID = 1587929679927696331L;

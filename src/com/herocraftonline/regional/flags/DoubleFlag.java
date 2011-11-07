@@ -1,5 +1,10 @@
 package com.herocraftonline.regional.flags;
 
+/**
+ * Represents a flag that stores a Double
+ * @author sleak
+ *
+ */
 public class DoubleFlag extends Flag<Double> {
     
     public DoubleFlag(String name) {
