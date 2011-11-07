@@ -36,9 +36,10 @@ public enum BuiltinFlag {
     DENY_SNOW_FORM(23, "no-snow-form"),
     DENY_ICE_FORM(24, "no-ice-form"),
     DENY_WEATHER(25, "no-weather"),
-    LIST_ACCESS(26, "list-access"),
-    ENTER_TEXT(27, "enter-text"),
-    LEAVE_TEXT(28, "leave-text");
+    DENY_ENDERMAN_BUILD(26, "no-enderman-blocks"),
+    DENY_NPC_SPAWN(27, "no-villager-spawn"),
+    ENTER_TEXT(28, "enter-text"),
+    LEAVE_TEXT(29, "leave-text");
     
     private final String name;
     private final int id;

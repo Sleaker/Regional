@@ -49,7 +49,8 @@ public class DefaultFlags extends HashMap<Flag<?>, Object>{
 		flags.put(new BooleanFlag(BuiltinFlag.INVINCIBILITY), false);
 		flags.put(new BooleanFlag(BuiltinFlag.NOTIFY_ENTER), true);
 		flags.put(new BooleanFlag(BuiltinFlag.NOTIFY_LEAVE), true);
-		flags.put(new BooleanFlag(BuiltinFlag.LIST_ACCESS), true);
+		flags.put(new BooleanFlag(BuiltinFlag.DENY_NPC_SPAWN), false);
+		flags.put(new BooleanFlag(BuiltinFlag.DENY_ENDERMAN_BUILD), true);
 	}
 	
 	public static DefaultFlags getInstance() {
