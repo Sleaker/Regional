@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.herocraftonline.regional.Regional;
-import com.herocraftonline.regional.Settings;
 import com.herocraftonline.regional.persistence.StorageHandler;
 import com.herocraftonline.regional.persistence.YMLStorageHandler;
 import com.herocraftonline.regional.regions.Region;
-import com.herocraftonline.regional.regions.WorldRegion;
 
 /**
  * Manages the world-specific regions, and the managers for those worlds
@@ -28,10 +26,7 @@ public class UniverseRegionManager {
 	 */
 	private StorageHandler regionStore;
 
-	private Regional plugin;
-
 	public UniverseRegionManager(Regional plugin) {
-		this.plugin = plugin;
 		worldManagers = new HashMap<String, WorldRegionManager>();
 		loadStorage(plugin);
 	}

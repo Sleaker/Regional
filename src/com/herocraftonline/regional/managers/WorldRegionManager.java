@@ -33,12 +33,9 @@ public class WorldRegionManager {
 	 */
 	private WorldRegion wRegion = null;
 
-	private final UniverseRegionManager uManager;
-
 	public WorldRegionManager(UniverseRegionManager uManager) {
 		regionMap = new HashMap<Integer, CubeRegion>();
 		areaMap = new HashMap<Cube, List<CubeRegion>>();
-		this.uManager = uManager;
 	}
 
 	/**

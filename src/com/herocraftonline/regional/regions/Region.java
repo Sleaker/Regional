@@ -15,8 +15,6 @@ import org.bukkit.plugin.Plugin;
 import com.herocraftonline.regional.flags.BooleanFlag;
 import com.herocraftonline.regional.flags.BuiltinFlag;
 import com.herocraftonline.regional.flags.Flag;
-import com.herocraftonline.regional.flags.RegionFlagSet;
-import com.herocraftonline.regional.managers.UniverseRegionManager;
 import com.herocraftonline.regional.managers.WorldRegionManager;
 
 /**
@@ -24,7 +22,7 @@ import com.herocraftonline.regional.managers.WorldRegionManager;
  * 
  * @author sleak
  */
-public abstract class Region {
+public abstract class Region implements Comparable<Region> {
 
 	/**
 	 * Non-Unique name for the Region
@@ -65,16 +63,6 @@ public abstract class Region {
 	 * HashMap of flags for this region
 	 */
 	private Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>();
-
-	/**
-	 * HashMap of standard flags for the region
-	 */
-	private Map<Flag<?>, Boolean> standardFlags = new HashMap<Flag<?>, Boolean>();
-	
-	/**
-	 * This regions resolved flags - should update whenever a flag is changed on a parent region, or on this region
-	 */
-	private RegionFlagSet resolvedFlags;
 	
 	//-------------------------//
 	//    Constructors
@@ -136,16 +124,23 @@ public abstract class Region {
 	 * Add a specific stateflag to the standard flag map
 	 */
 	public void addFlag(BuiltinFlag flag, boolean val) {
-		standardFlags.put(new BooleanFlag(flag), val);
+		flags.put(new BooleanFlag(flag), val);
 	}
 	
+	/**
+	 * Gets a flag
+	 * @param flag
+	 */
+	public void getFlag(BuiltinFlag flag) {
+		flags.get(new BooleanFlag(flag));
+	}
 	/**
 	 * Removes a specific Stateflag from the standard flag map
 	 * 
 	 * @param flag
 	 */
 	public void removeFlag(BuiltinFlag flag) {
-		standardFlags.remove(new BooleanFlag(flag));
+		flags.remove(new BooleanFlag(flag));
 	}
 	
 	/**
@@ -215,23 +210,9 @@ public abstract class Region {
 		return new HashMap<Flag<?>, Object>(flags);
 	}
 
-	/**
-	 * Returns a snapshot set of all active flags on this region - including inheritence
-	 * 
-	 * @param uManager
-	 * @return
-	 */
-	public Map<Flag<?>, Object> getInheritedFlags(UniverseRegionManager uManager) {
-		if (this.parentId > -1) {
-			Map<Flag<?>, Object> resolvedFlags = new HashMap<Flag<?>, Object>();
-			//Dumping all parent flags into the map first allows child flags to overwrite parent flags
-			resolvedFlags.putAll(uManager.getRegion(this.worldName, this.parentId).getInheritedFlags(uManager));
-			resolvedFlags.putAll(flags);
-			return resolvedFlags;
-		}
-		return flags;
+	public <T> boolean hasFlag(Flag<T> flag) {
+		return flags.containsKey(flag);
 	}
-
 	/**
 	 * Gets the type of this region.
 	 * @return string type
@@ -390,10 +371,24 @@ public abstract class Region {
 		return this.id == ((Region) o).id;
 	}
 
+	@Override
 	public int hashCode() {
 		return this.id;
 	}
-
+	
+	@Override
+    public int compareTo(Region other) {
+        if (id == other.id) {
+            return 0;
+        } else if (weight == other.weight) {
+            return 1;
+        } else if (weight > other.weight) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+    
 	public static class CircularInheritenceException extends Exception {
 		private static final long serialVersionUID = -3626449351263374520L;
 	}

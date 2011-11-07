@@ -1,17 +1,20 @@
 package com.herocraftonline.regional.flags;
 
 import java.util.HashMap;
-import java.util.Map;
 
-public class DefaultFlags {
+public class DefaultFlags extends HashMap<Flag<?>, Object>{
+	
+	private static final long serialVersionUID = 1587929679927696331L;
+	
+	private DefaultFlags() {}
 	
 	/**
 	 * HashMap of flags
 	 */
-	public static final Map<Flag<?>, Object> flags;
+	private static final DefaultFlags flags;
 	
 	static {
-		flags = new HashMap<Flag<?>, Object>();
+		flags = new DefaultFlags();
 		
 		//Load default StateFlags
 		flags.put(new BooleanFlag(BuiltinFlag.DENY_BUILD), false);
@@ -41,5 +44,9 @@ public class DefaultFlags {
 		flags.put(new BooleanFlag(BuiltinFlag.NOTIFY_ENTER), true);
 		flags.put(new BooleanFlag(BuiltinFlag.NOTIFY_LEAVE), true);
 		flags.put(new BooleanFlag(BuiltinFlag.LIST_ACCESS), true);
+	}
+	
+	public static DefaultFlags getInstance() {
+		return flags;
 	}
 }

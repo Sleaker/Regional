@@ -46,6 +46,16 @@ public abstract class Flag<T> {
 		return this.type.getName();
 	}
 
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		else if (!(obj instanceof Flag))
+			return false;
+		
+		Flag<?> f = (Flag<?>) obj;
+		return f.name == this.name;
+	}
 	/**
 	 * Returns a Type casted variable of object o
 	 * 
