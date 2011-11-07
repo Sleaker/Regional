@@ -3,15 +3,16 @@ package com.herocraftonline.regional.listeners;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class RegionalPlayerListener extends PlayerListener {
+import com.herocraftonline.regional.Regional;
 
-	public RegionalPlayerListener() {
-		
+public class RegionalPlayerListener extends PlayerListener {
+	
+	private final Regional plugin;
+
+	public RegionalPlayerListener(Regional plugin) {
+		this.plugin = plugin;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.bukkit.event.player.PlayerListener#onPlayerMove(org.bukkit.event.player.PlayerMoveEvent)
-	 */
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if (event.isCancelled()) 

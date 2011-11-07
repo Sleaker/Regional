@@ -55,4 +55,8 @@ public class DefaultFlags extends HashMap<Flag<?>, Object>{
 	public static DefaultFlags getInstance() {
 		return flags;
 	}
+	
+	public static boolean get(BuiltinFlag bFlag) {
+		return (Boolean) flags.get(new BooleanFlag(bFlag));
+	}
 }

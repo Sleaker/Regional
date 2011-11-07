@@ -26,7 +26,7 @@ public class WorldRegionManager {
 	/**
 	 * Map of all cubes to the regions they contain
 	 */
-	private Map<Cube, List<CubeRegion>> areaMap;
+	private Map<Cube, List<Region>> areaMap;
 	
 	/**
 	 * Holds the world-specific Region
@@ -35,7 +35,7 @@ public class WorldRegionManager {
 
 	public WorldRegionManager(UniverseRegionManager uManager) {
 		regionMap = new HashMap<Integer, CubeRegion>();
-		areaMap = new HashMap<Cube, List<CubeRegion>>();
+		areaMap = new HashMap<Cube, List<Region>>();
 	}
 
 	/**
@@ -48,6 +48,18 @@ public class WorldRegionManager {
 		return regionMap.get(p);
 	}
 
+	/**
+	 * 
+	 * @param cube
+	 * @return list of regions associated with this cube
+	 */
+	public List<Region> getRegions(Cube cube) {
+		if (areaMap.containsKey(cube))
+			return areaMap.get(cube);
+		
+		return new ArrayList<Region>();
+	}
+	
 	/**
 	 * Returns a collection of all Regions in the Region Manager
 	 * 
@@ -82,7 +94,7 @@ public class WorldRegionManager {
 			regionMap.put(region.getId(), region);
 			for (Cube cube : region.getCubes()) {
 				if (!areaMap.containsKey(cube))
-					areaMap.put(cube, new ArrayList<CubeRegion>());
+					areaMap.put(cube, new ArrayList<Region>());
 
 				areaMap.get(cube).add(region);
 			}
@@ -90,5 +102,12 @@ public class WorldRegionManager {
 		}
 		else
 			return false;
+	}
+	
+	/**
+	 * @return the WorldRegion associated with this world
+	 */
+	public WorldRegion getWorldRegion() {
+		return wRegion;
 	}
 }

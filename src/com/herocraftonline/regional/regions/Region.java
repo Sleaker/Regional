@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.herocraftonline.regional.flags.BooleanFlag;
 import com.herocraftonline.regional.flags.BuiltinFlag;
+import com.herocraftonline.regional.flags.DefaultFlags;
 import com.herocraftonline.regional.flags.Flag;
 import com.herocraftonline.regional.managers.WorldRegionManager;
 
@@ -131,8 +132,9 @@ public abstract class Region implements Comparable<Region> {
 	 * Gets a flag
 	 * @param flag
 	 */
-	public void getFlag(BuiltinFlag flag) {
-		flags.get(new BooleanFlag(flag));
+	public boolean getFlag(BuiltinFlag flag) {
+		Boolean val = (Boolean) flags.get(new BooleanFlag(flag));
+		return val != null ? val : DefaultFlags.get(flag);
 	}
 	/**
 	 * Removes a specific Stateflag from the standard flag map

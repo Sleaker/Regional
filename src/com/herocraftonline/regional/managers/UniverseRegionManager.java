@@ -1,6 +1,7 @@
 package com.herocraftonline.regional.managers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import com.herocraftonline.regional.Regional;
 import com.herocraftonline.regional.Settings;
 import com.herocraftonline.regional.persistence.StorageHandler;
 import com.herocraftonline.regional.persistence.YMLStorageHandler;
+import com.herocraftonline.regional.regions.Cube;
 import com.herocraftonline.regional.regions.Region;
 
 /**
@@ -43,6 +45,15 @@ public class UniverseRegionManager {
 		return worldManagers.get(worldName).getRegion(id);
 	}
 
+	/**
+	 * Returns the list of CubeRegions assocaited with this cube from the WorldManager
+	 * @param cube
+	 * @return the List of CubeRegions
+	 */
+	public List<Region> getRegions(Cube cube) {
+		return worldManagers.get(cube.worldName).getRegions(cube);
+	}
+	
 	/**
 	 * Get a worlds region manager
 	 * 

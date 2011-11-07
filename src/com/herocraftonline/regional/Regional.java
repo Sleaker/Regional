@@ -8,7 +8,6 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.herocraftonline.regional.listeners.RegionalBlockListener;
 import com.herocraftonline.regional.listeners.RegionalPlayerListener;
 import com.herocraftonline.regional.listeners.RegionalWorldListener;
 import com.herocraftonline.regional.managers.UniverseRegionManager;
@@ -21,7 +20,6 @@ public class Regional extends JavaPlugin {
 	private Settings settings;
 	private RegionalWorldListener wListener;
 	private RegionalPlayerListener pListener;
-	private RegionalBlockListener bListener;
 	
 	@Override
 	public void onDisable() {
@@ -51,15 +49,10 @@ public class Regional extends JavaPlugin {
 		wListener = new RegionalWorldListener(this);
 		pm.registerEvent(Event.Type.WORLD_LOAD, wListener, Priority.Monitor, this);
 		
-		//Block Events
-		bListener = new RegionalBlockListener();
-		pm.registerEvent(Event.Type.BLOCK_BREAK, bListener, Priority.High, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGE, bListener, Priority.High, this);
-		
 		
 		//If the settings are set to monitor on-move then lets go ahead and enable it
 		if (settings.isOnMove()) {
-			pListener = new RegionalPlayerListener();
+			pListener = new RegionalPlayerListener(this);
 			pm.registerEvent(Event.Type.PLAYER_MOVE, pListener, Priority.Monitor, this);
 		}
 		
