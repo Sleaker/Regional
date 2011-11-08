@@ -36,5 +36,4 @@ public class RegionalWeatherListener extends WeatherListener {
 		
 		event.setCancelled(uManager.getWorldRegionManager(world).getWorldRegion().getFlag(BuiltinFlag.DENY_WEATHER));
 	}
-	
 }

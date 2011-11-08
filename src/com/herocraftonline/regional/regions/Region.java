@@ -65,6 +65,7 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	private Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>();
 	
+
 	//-------------------------//
 	//    Constructors
 	//-------------------------//
@@ -212,9 +213,15 @@ public abstract class Region implements Comparable<Region> {
 		return new HashMap<Flag<?>, Object>(flags);
 	}
 
+	/**
+	 * Returns true if this Region has the flag defined
+	 * @param flag
+	 * @return boolean contains the flag
+	 */
 	public <T> boolean hasFlag(Flag<T> flag) {
 		return flags.containsKey(flag);
 	}
+	
 	/**
 	 * Gets the type of this region.
 	 * @return string type
