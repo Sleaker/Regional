@@ -6,6 +6,7 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
@@ -78,6 +79,11 @@ public class RegionalEntityListener extends EntityListener {
 		Cube cube = new Cube(event.getEntity().getLocation());
 		RegionFlagSet rfs = new RegionFlagSet(uManager.getRegions(cube), uManager.getWorldRegionManager(cube.worldName).getWorldRegion());
 
+		if (rfs.getFlag(BuiltinFlag.INVINCIBILITY)) {
+			event.setCancelled(true);
+			return;
+		}
+			
 		if (event instanceof EntityDamageByEntityEvent) {
 			if (onEntityDamageEntity((EntityDamageByEntityEvent) event, rfs)) {
 				event.setCancelled(true);
@@ -108,6 +114,7 @@ public class RegionalEntityListener extends EntityListener {
 			event.setCancelled(rfs.getFlag(BuiltinFlag.DENY_CREEPER_EXPLOSION));
 		else if (event.getEntity() instanceof Fireball) {
 			event.setCancelled(rfs.getFlag(BuiltinFlag.DENY_GHAST_FIREBALL));
-		}
+		} else if (event.getEntity() instanceof TNTPrimed)
+			event.setCancelled(rfs.getFlag(BuiltinFlag.DENY_TNT_EXPLOSION));
 	}
 }

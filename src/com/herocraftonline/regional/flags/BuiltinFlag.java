@@ -38,8 +38,8 @@ public enum BuiltinFlag {
     DENY_WEATHER(25, "no-weather"),
     DENY_ENDERMAN_BUILD(26, "no-enderman-blocks"),
     DENY_NPC_SPAWN(27, "no-villager-spawn"),
-    ENTER_TEXT(28, "enter-text"),
-    LEAVE_TEXT(29, "leave-text");
+    ENTER_TEXT(29, "enter-text"),
+    LEAVE_TEXT(30, "leave-text");
     
     private final String name;
     private final int id;

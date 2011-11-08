@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 
 import com.herocraftonline.regional.Regional;
@@ -25,7 +26,6 @@ public class RegionalBlockListener extends BlockListener {
 		uManager = plugin.getUniverseRegionManager();
 	}
 
-
 	@Override
 	public void onBlockFromTo(BlockFromToEvent event) {
 		if (event.isCancelled())
@@ -41,7 +41,6 @@ public class RegionalBlockListener extends BlockListener {
 
 		}
 	}
-
 
 	@Override
 	public void onBlockBurn(BlockBurnEvent event) {
@@ -69,7 +68,7 @@ public class RegionalBlockListener extends BlockListener {
 	public void onBlockForm(BlockFormEvent event) {
 		if (event.isCancelled())
 			return;
-		
+
 		RegionFlagSet rfs = getRFS(event.getBlock());
 		Material m = event.getNewState().getType();
 		if (m == Material.ICE)
@@ -82,7 +81,7 @@ public class RegionalBlockListener extends BlockListener {
 	public void onBlockFade(BlockFadeEvent event) {
 		if (event.isCancelled())
 			return;
-		
+
 		RegionFlagSet rfs = getRFS(event.getBlock());
 		Material m = event.getBlock().getType();
 		if (m == Material.ICE)
@@ -90,7 +89,6 @@ public class RegionalBlockListener extends BlockListener {
 		else if (m == Material.SNOW)
 			event.setCancelled(rfs.getFlag(BuiltinFlag.DENY_SNOW_MELT));
 	}
-
 
 	@Override
 	public void onLeavesDecay(LeavesDecayEvent event) {
@@ -100,6 +98,21 @@ public class RegionalBlockListener extends BlockListener {
 		event.setCancelled(getRFS(event.getBlock()).getFlag(BuiltinFlag.DENY_LEAF_DECAY));
 	}
 
+	@Override
+	public void onBlockSpread(BlockSpreadEvent event) {
+		if (event.isCancelled())
+			return;
+
+		Material m = event.getSource().getType();
+		if (m == Material.BROWN_MUSHROOM || m == Material.RED_MUSHROOM)
+			event.setCancelled(getRFS(event.getBlock()).getFlag(BuiltinFlag.DENY_MUSHROOM_FORM));
+	}
+
+	/**
+	 * Returns a region flag set at the block given
+	 * @param block
+	 * @return RegionFlagSet for the location
+	 */
 	private RegionFlagSet getRFS(Block block) {
 		Cube cube = new Cube(block.getLocation());
 		return new RegionFlagSet(uManager.getRegions(cube), uManager.getWorldRegionManager(cube.worldName).getWorldRegion());
