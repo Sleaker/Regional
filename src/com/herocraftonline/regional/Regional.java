@@ -2,10 +2,13 @@ package com.herocraftonline.regional;
 
 import java.util.logging.Logger;
 
+import net.milkbowl.vault.permission.Permission;
+
 import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.herocraftonline.regional.listeners.RegionalPlayerListener;
@@ -20,6 +23,7 @@ public class Regional extends JavaPlugin {
 	private Settings settings;
 	private RegionalWorldListener wListener;
 	private RegionalPlayerListener pListener;
+	public static Permission perms;
 	
 	@Override
 	public void onDisable() {
@@ -30,7 +34,7 @@ public class Regional extends JavaPlugin {
 	public void onEnable() {
 		plugName = "[" + this.getDescription().getName() + "]";
 		PluginManager pm = this.getServer().getPluginManager();
-		
+		setupPermissions();
 		//Load our settings file
 		settings = new Settings(this);
 		
@@ -58,7 +62,16 @@ public class Regional extends JavaPlugin {
 		
 		log.info(plugName + " v" + this.getDescription().getVersion() + " by " + this.getDescription().getAuthors() + " enabled!");
 	}
-
+	
+    private Boolean setupPermissions()
+    {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            perms = permissionProvider.getProvider();
+        }
+        return (perms != null);
+    }
+    
 	/**
 	 * @return the UniverseRegionManager
 	 */

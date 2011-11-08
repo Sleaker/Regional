@@ -19,6 +19,9 @@
 		</delete>
 		<delete file="Regional.jar" />
 		<mkdir dir="bin"/>
+		<echo>Retreiving Libraries</echo>
+	        <get src="http://ci.milkbowl.net/job/Vault/lastSuccessfulBuild/artifact/Vault.jar"
+	        	dest="libs/Vault.jar" verbose="false" usetimestamp="true" />
 	</target>
   
     <target name="compile" description="Compilation target">
