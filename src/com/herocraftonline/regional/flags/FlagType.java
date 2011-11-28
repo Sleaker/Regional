@@ -2,7 +2,6 @@ package com.herocraftonline.regional.flags;
 
 /**
  * Represents a type of flag
- * @author sleak
  *
  */
 public enum FlagType {

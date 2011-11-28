@@ -3,11 +3,9 @@ package com.herocraftonline.regional.flags;
 /**
  * Represents a flag that holds a boolean value
  * The flag type can either be a State Flag or a Custom boolean Flag
- * @author sleak
  *
  */
 public class BooleanFlag extends Flag<Boolean>{
-
 	
     public BooleanFlag(String name) {
         super(name, FlagType.BOOLEAN);
@@ -20,8 +18,8 @@ public class BooleanFlag extends Flag<Boolean>{
     public BooleanFlag(String name, FlagType type) {
     	super(name, type);
     }
-    
-    @Override
+
+	@Override
     public Boolean objectToType(Object o) {
         if (o instanceof Boolean) {
             return (Boolean) o;

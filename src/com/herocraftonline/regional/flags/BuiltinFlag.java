@@ -6,8 +6,6 @@ import java.util.Map;
 /**
  * Defines the standard flags that a region can have
  * 
- * @author sleak
- *
  */
 public enum BuiltinFlag {
     DENY_BUILD(0, "no-build"),
@@ -38,6 +36,7 @@ public enum BuiltinFlag {
     DENY_WEATHER(25, "no-weather"),
     DENY_ENDERMAN_BUILD(26, "no-enderman-blocks"),
     DENY_NPC_SPAWN(27, "no-villager-spawn"),
+    PASSTHROUGH(28, "pass-through"),
     ENTER_TEXT(29, "enter-text"),
     LEAVE_TEXT(30, "leave-text");
     

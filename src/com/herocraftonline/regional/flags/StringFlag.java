@@ -2,7 +2,6 @@ package com.herocraftonline.regional.flags;
 
 /**
  * Represents a flag that holds a string value
- * @author sleak
  *
  */
 public class StringFlag extends Flag<String> {

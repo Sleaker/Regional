@@ -16,6 +16,7 @@ import com.herocraftonline.regional.flags.BooleanFlag;
 import com.herocraftonline.regional.flags.BuiltinFlag;
 import com.herocraftonline.regional.flags.DefaultFlags;
 import com.herocraftonline.regional.flags.Flag;
+import com.herocraftonline.regional.flags.PlayerFlagSet;
 import com.herocraftonline.regional.managers.WorldRegionManager;
 
 /**
@@ -65,6 +66,8 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	private Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>();
 	
+	private Map<String, PlayerFlagSet> storedPlayerFlags = new HashMap<String, PlayerFlagSet>();
+	private Map<String, PlayerFlagSet> playerFlags = new HashMap<String, PlayerFlagSet>();
 
 	//-------------------------//
 	//    Constructors
@@ -117,6 +120,12 @@ public abstract class Region implements Comparable<Region> {
 	public String getWorldName() {
 		return worldName;
 	}
+	
+	/**
+	 * Gets the type of this region.
+	 * @return string type
+	 */
+	public abstract String getTypeName();
 
 	//--------------------------//
 	//   Flag Methods
@@ -222,12 +231,10 @@ public abstract class Region implements Comparable<Region> {
 		return flags.containsKey(flag);
 	}
 	
-	/**
-	 * Gets the type of this region.
-	 * @return string type
-	 */
-	public abstract String getTypeName();
-
+	//-----------------------//
+	// Parent/Child Methods
+	//-----------------------//
+	
 	/**
 	 * Attempts to set the parent of this Region
 	 * 

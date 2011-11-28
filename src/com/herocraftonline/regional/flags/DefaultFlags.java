@@ -5,7 +5,6 @@ import java.util.HashMap;
 /**
  * Data storage for all default values of flags
  * This is a singleton
- * @author sleak
  *
  */
 public class DefaultFlags extends HashMap<Flag<?>, Object>{
@@ -49,6 +48,7 @@ public class DefaultFlags extends HashMap<Flag<?>, Object>{
 		flags.put(new BooleanFlag(BuiltinFlag.INVINCIBILITY), false);
 		flags.put(new BooleanFlag(BuiltinFlag.NOTIFY_ENTER), true);
 		flags.put(new BooleanFlag(BuiltinFlag.NOTIFY_LEAVE), true);
+		flags.put(new BooleanFlag(BuiltinFlag.PASSTHROUGH), false);
 		flags.put(new BooleanFlag(BuiltinFlag.DENY_NPC_SPAWN), false);
 		flags.put(new BooleanFlag(BuiltinFlag.DENY_ENDERMAN_BUILD), true);
 	}
