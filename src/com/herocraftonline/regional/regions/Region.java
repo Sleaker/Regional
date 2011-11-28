@@ -12,6 +12,7 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
+import com.herocraftonline.regional.Regional;
 import com.herocraftonline.regional.flags.BooleanFlag;
 import com.herocraftonline.regional.flags.BuiltinFlag;
 import com.herocraftonline.regional.flags.DefaultFlags;
@@ -66,9 +67,18 @@ public abstract class Region implements Comparable<Region> {
 	 */
 	private Map<Flag<?>, Object> flags = new HashMap<Flag<?>, Object>();
 	
+	/**
+	 * Region specific player flags
+	 */
 	private Map<String, PlayerFlagSet> storedPlayerFlags = new HashMap<String, PlayerFlagSet>();
+	
+	/**
+	 * Active player flags, (inherited etc)
+	 */
 	private Map<String, PlayerFlagSet> playerFlags = new HashMap<String, PlayerFlagSet>();
-
+	
+	private PlayerFlagSet defaultPlayerFlags;
+	
 	//-------------------------//
 	//    Constructors
 	//-------------------------//
@@ -342,7 +352,66 @@ public abstract class Region implements Comparable<Region> {
 	public boolean removeNamespace(Plugin plugin) {
 		return this.namespaces.remove(plugin.getDescription().getName());
 	}
+	
+	//----------------------------//
+	// Player Permissions 
+	//----------------------------//
+	
+	public void setPlayer(String name, boolean build, boolean use, boolean move) {
+		storedPlayerFlags.put(name, new PlayerFlagSet(build, use, move));
+		//TODO: save to file
+		recalculatePlayerFlags();
+	}
 
+	public boolean removePlayer(String name) {
+		if (storedPlayerFlags.remove(name) != null) {
+			recalculatePlayerFlags();
+			//TODO: save to file
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * returns a copy of the PlayerFlagSet for the given player
+	 * @param name
+	 * @return
+	 */
+	public PlayerFlagSet getPlayerFlagSet(String name) {
+		PlayerFlagSet pfs = playerFlags.get(name);
+		if (pfs == null)
+			pfs = defaultPlayerFlags;
+		
+		return new PlayerFlagSet(pfs);
+	}
+	
+	public Map<String, PlayerFlagSet> getInheritedFlags() {
+		return new HashMap<String, PlayerFlagSet>(playerFlags);
+	}
+	
+	public Map<String, PlayerFlagSet> getPlayerFlags() {
+		return new HashMap<String, PlayerFlagSet>(storedPlayerFlags);
+	}
+	
+	public void setDefaultPlayerFlags(boolean build, boolean use, boolean move) {
+		this.defaultPlayerFlags = new PlayerFlagSet(build, use, move);
+	}
+	
+	public PlayerFlagSet getDefaultPlayerFlags() {
+		return defaultPlayerFlags;
+	}
+	
+	public void recalculatePlayerFlags() {
+		WorldRegionManager wrm = Regional.getUniverseRegionManager().getWorldRegionManager(worldName);
+		playerFlags.clear();
+		if (this.parentId != -1 && wrm.getRegion(parentId).weight >= weight) {
+			playerFlags.putAll(wrm.getRegion(parentId).getInheritedFlags());
+		}
+		playerFlags.putAll(storedPlayerFlags);
+		for (Region child : this.children) {
+			child.recalculatePlayerFlags();
+		}
+	}
 	//----------------------------//
 	//  Region Test Methods
 	//----------------------------//

@@ -19,7 +19,7 @@ public class Regional extends JavaPlugin {
 
 	public static String plugName;
 	private Logger log = Logger.getLogger("Minecraft");
-	private UniverseRegionManager uManager;
+	private static UniverseRegionManager uManager;
 	private Settings settings;
 	private RegionalWorldListener wListener;
 	private RegionalPlayerListener pListener;
@@ -75,7 +75,7 @@ public class Regional extends JavaPlugin {
 	/**
 	 * @return the UniverseRegionManager
 	 */
-	public UniverseRegionManager getUniverseRegionManager() {
+	public static UniverseRegionManager getUniverseRegionManager() {
 		return uManager;
 	}
 
