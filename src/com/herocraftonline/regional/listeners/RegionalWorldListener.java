@@ -14,7 +14,7 @@ public class RegionalWorldListener extends WorldListener {
 	private Logger log = Logger.getLogger("Minecraft");
 	
 	public RegionalWorldListener(Regional plugin) {
-		this.uManager = plugin.getUniverseRegionManager();
+		this.uManager = Regional.getUniverseRegionManager();
 	}
 	
 	@Override

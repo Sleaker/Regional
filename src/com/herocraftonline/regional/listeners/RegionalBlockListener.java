@@ -23,7 +23,7 @@ public class RegionalBlockListener extends BlockListener {
 	private UniverseRegionManager uManager;
 
 	public RegionalBlockListener(Regional plugin) {
-		uManager = plugin.getUniverseRegionManager();
+		uManager = Regional.getUniverseRegionManager();
 	}
 
 	@Override

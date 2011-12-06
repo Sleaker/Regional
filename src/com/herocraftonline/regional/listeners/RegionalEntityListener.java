@@ -27,7 +27,7 @@ public class RegionalEntityListener extends EntityListener {
 	private UniverseRegionManager uManager;
 
 	public RegionalEntityListener(Regional plugin) {
-		uManager = plugin.getUniverseRegionManager();
+		uManager = Regional.getUniverseRegionManager();
 	}
 
 	@Override

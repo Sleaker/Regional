@@ -15,7 +15,7 @@ public class RegionalWeatherListener extends WeatherListener {
 	private UniverseRegionManager uManager;
 	
 	public RegionalWeatherListener(Regional plugin) {
-		uManager = plugin.getUniverseRegionManager();
+		uManager = Regional.getUniverseRegionManager();
 	}
 
 	@Override
